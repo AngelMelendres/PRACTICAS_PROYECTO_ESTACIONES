@@ -1,7 +1,7 @@
 // ... (importaciones y código anterior)
 import React, { createContext, useEffect, useState } from "react";
 import UsuarioAxios from "../config/usuarioAxios";
-import locacioes from '../assets/data/locacionesEcuador.json'
+import locacioes from "../assets/data/locacionesEcuador.json";
 const EstacionesContext = createContext();
 
 const EstacionesProvider = ({ children }) => {
@@ -37,7 +37,11 @@ const EstacionesProvider = ({ children }) => {
 
   const agregarEstacion = async (nuevaEstacion) => {
     try {
-      const { data } = await UsuarioAxios.post("/estaciones", nuevaEstacion);
+      const { data } = await UsuarioAxios.post("/estaciones", nuevaEstacion, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setEstaciones([...estaciones, data]);
     } catch (error) {
       console.error("Error al agregar la estación:", error);
@@ -47,7 +51,9 @@ const EstacionesProvider = ({ children }) => {
   const eliminarEstacion = async (id) => {
     try {
       await UsuarioAxios.delete(`/estaciones/${id}`);
-      setEstaciones(estaciones.filter((estacion) => estacion.idestacion !== id));
+      setEstaciones(
+        estaciones.filter((estacion) => estacion.idestacion !== id)
+      );
     } catch (error) {
       console.error("Error al eliminar la estación:", error);
     }
@@ -67,14 +73,13 @@ const EstacionesProvider = ({ children }) => {
     }
   };
 
-
   const obtenerlocacionesEcuador = async () => {
     try {
       setLocacionesEcuador(locacioes);
     } catch (error) {
-      console.error('Error al obtener las ubicaciones de Ecuador:', error);
+      console.error("Error al obtener las ubicaciones de Ecuador:", error);
     }
-  }
+  };
   return (
     <EstacionesContext.Provider
       value={{

@@ -8,41 +8,46 @@ const AgregarEstacion = () => {
   const [provincias, setProvincias] = useState([]);
   const [selectedProvincia, setSelectedProvincia] = useState("");
   const [cantones, setCantones] = useState([]);
+  const [imagen, setImagen] = useState(null);
 
   useEffect(() => {
-    const provinciasArray = Object.entries(locacionesEcuador).map(([index, item]) => ({
-      id: index,
-      nombre: item.provincia
-    }));
+    const provinciasArray = Object.entries(locacionesEcuador).map(
+      ([index, item]) => ({
+        id: index,
+        nombre: item.provincia,
+      })
+    );
     setProvincias(provinciasArray);
   }, [locacionesEcuador]);
 
   const handleProvinciaChange = (e) => {
     const provinciaa = e.target.value;
-    const provinciaSeleccionada = provincias.find(provincia => provincia.nombre === provinciaa);
+    const provinciaSeleccionada = provincias.find(
+      (provincia) => provincia.nombre === provinciaa
+    );
     setSelectedProvincia(provinciaSeleccionada);
 
-     const cantonesProvincia = locacionesEcuador[provinciaSeleccionada.id].cantones;
+    const cantonesProvincia =
+      locacionesEcuador[provinciaSeleccionada.id].cantones;
     const cantonesArray = Object.values(cantonesProvincia).map(
       (canton) => canton.canton
     );
-    nuevaEstacion.provincia=provinciaSeleccionada.nombre
-    setCantones(cantonesArray); 
+    nuevaEstacion.provincia = provinciaSeleccionada.nombre;
+    setCantones(cantonesArray);
   };
 
   const [nuevaEstacion, setNuevaEstacion] = useState({
     nombre: "",
-    provincia: "", // Agregado el campo ciudad
+    provincia: "",
     canton: "",
     parroquia: "",
     longitud: "",
     latitud: "",
     altura: "",
-    direccion: "", // Agregado el campo direccion
+    direccion: "",
     promotorTerreno: "",
     institucionACargo: "",
     manualAutomatica: "",
-    // Agregados los campos promotorTerreno, institucionACargo, manualAutomatica
   });
 
   const handleChange = (e) => {
@@ -52,12 +57,31 @@ const AgregarEstacion = () => {
     });
   };
 
+  const handleimagenChange = (e) => {
+    setImagen(e.target.files[0]);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Crear un objeto FormData para enviar los datos del formulario, incluida la imagen
+    const formData = new FormData();
+    formData.append("nombre", nuevaEstacion.nombre);
+    formData.append("provincia", nuevaEstacion.provincia);
+    formData.append("canton", nuevaEstacion.canton);
+    formData.append("parroquia", nuevaEstacion.parroquia);
+    formData.append("longitud", nuevaEstacion.longitud);
+    formData.append("latitud", nuevaEstacion.latitud);
+    formData.append("altura", nuevaEstacion.altura);
+    formData.append("direccion", nuevaEstacion.direccion);
+    formData.append("promotorTerreno", nuevaEstacion.promotorTerreno);
+    formData.append("institucionACargo", nuevaEstacion.institucionACargo);
+    formData.append("manualAutomatica", nuevaEstacion.manualAutomatica);
+    formData.append("imagen", imagen);
 
-    agregarEstacion(nuevaEstacion);
+    agregarEstacion(formData);
+
     // Limpiar el formulario después de enviar los datos
-    setNuevaEstacion({
+/*     setNuevaEstacion({
       nombre: "",
       provincia: "",
       canton: "",
@@ -71,7 +95,9 @@ const AgregarEstacion = () => {
       manualAutomatica: "",
     });
     // Redirige to the list of stations
-    navigate("/estaciones");
+    navigate("/estaciones"); */
+
+    console.log(formData)
   };
 
   return (
@@ -91,6 +117,7 @@ const AgregarEstacion = () => {
             className="mb-3"
             onSubmit={handleSubmit}
           >
+            {/* Nombre */}
             <div className="mb-3">
               <label htmlFor="nombre" className="form-label font-bold">
                 Nombre de la estación
@@ -106,7 +133,7 @@ const AgregarEstacion = () => {
                 minLength="5"
               />
             </div>
-
+            {/* Provincia - canton*/}
             <div className="row mb-3">
               <div className="col-md-4">
                 <label
@@ -170,7 +197,7 @@ const AgregarEstacion = () => {
                 />
               </div>
             </div>
-
+            {/* Direccion */}
             <div className="mb-3">
               <label htmlFor="direccion" className="form-label font-bold">
                 Dirección
@@ -187,6 +214,7 @@ const AgregarEstacion = () => {
               />
             </div>
 
+            {/* Longitud - latitud -altura */}
             <div className="row mb-3">
               <div className="col-md-4">
                 <label htmlFor="latitud" className="form-label font-bold">
@@ -234,6 +262,7 @@ const AgregarEstacion = () => {
               </div>
             </div>
 
+            {/* pormotoor- insitucion - manualAutomatica */}
             <div className="row mb-3">
               <div className="col-md-4">
                 <label
@@ -294,11 +323,20 @@ const AgregarEstacion = () => {
               </div>
             </div>
 
+            {/* IMAGEN */}
             <div className="mb-3">
-              <label className="form-label font-bold text-muted">
-                Imagen de la estación
-              </label>
-              <input type="file" className="form-control" name="image" />
+              <div>
+                <label htmlFor="formFileLg" className="form-label">
+                  Imagen de la estacion
+                </label>
+                <input
+                  className="form-control form-control-lg"
+                  id="formFileLg"
+                  type="file"
+                  onChange={handleimagenChange}
+                  accept="image/*"
+                ></input>
+              </div>
             </div>
 
             <div className="mb-3 text-center">

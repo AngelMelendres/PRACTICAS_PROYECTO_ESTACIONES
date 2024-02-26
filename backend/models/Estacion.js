@@ -27,9 +27,10 @@ class Estacion {
       promotorTerreno,
       institucionACargo,
       manualAutomatica,
+      imagen,
     } = estacionData;
     const query =
-      "INSERT INTO estaciones (nombre, provincia, canton, parroquia, longitud, latitud, altura, direccion, promotorTerreno, institucionACargo, manualAutomatica) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *";
+      "INSERT INTO estaciones (nombre, provincia, canton, parroquia, longitud, latitud, altura, direccion, promotorTerreno, institucionACargo, manualAutomatica,imagen) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,$12) RETURNING *";
     const values = [
       nombre,
       provincia,
@@ -42,6 +43,7 @@ class Estacion {
       promotorTerreno,
       institucionACargo,
       manualAutomatica,
+      imagen,
     ];
     const { rows } = await pool.query(query, values);
     return rows[0];

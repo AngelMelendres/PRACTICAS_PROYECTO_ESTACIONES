@@ -13,7 +13,7 @@ const ItemEstacion = ({ estacion }) => {
         <div className="package-item bg-white mb-2">
           <img
             className="img-fluid"
-            src="https://concepto.de/wp-content/uploads/2015/03/paisaje-e1549600034372.jpg"
+            src={estacion.imagen}
           ></img>
           <div className="p-4">
             <div className="d-flex justify-content-between mb-3">
