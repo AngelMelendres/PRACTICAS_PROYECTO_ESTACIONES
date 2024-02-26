@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 import useEstaciones from "../../hooks/useEstaciones";
 import Charts from "./Charts";
 
-const Map = () => {
+const MapaEstaciones = () => {
   const { estaciones } = useEstaciones();
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -49,8 +49,8 @@ const Map = () => {
       <div className="w-2/3 mx-auto mt-10">
         <MapContainer
           center={[-1.65373, -78.677258]}
-          zoom={8}
-          style={{ height: "500px", width: "100%" }}
+          zoom={6.5}
+          style={{ height: "600px", width: "90%", margin: "0 auto" }}
           scrollWheelZoom={false}
         >
           <TileLayer
@@ -97,7 +97,7 @@ const Map = () => {
                     </li>
                   </ul>
                   <button
-                    className="btn bg-blue-400 text-white font-bold rounded-sm mx-auto my-2"
+                    className="btn btn-primary"
                     onClick={openModal}
                   >
                     Ver Datos
@@ -112,4 +112,4 @@ const Map = () => {
   );
 };
 
-export default Map;
+export default MapaEstaciones;

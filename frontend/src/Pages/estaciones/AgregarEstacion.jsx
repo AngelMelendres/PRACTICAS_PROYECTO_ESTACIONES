@@ -1,14 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useEstaciones from "../../hooks/useEstaciones";
 import { useNavigate } from "react-router-dom";
 
 const AgregarEstacion = () => {
-  const { agregarEstacion } = useEstaciones();
+  const { agregarEstacion, locacionesEcuador } = useEstaciones();
   const navigate = useNavigate();
+  const [provincias, setProvincias] = useState([]);
+  const [selectedProvincia, setSelectedProvincia] = useState("");
+  const [cantones, setCantones] = useState([]);
+
+  useEffect(() => {
+    const provinciasArray = Object.entries(locacionesEcuador).map(([index, item]) => ({
+      id: index,
+      nombre: item.provincia
+    }));
+    setProvincias(provinciasArray);
+  }, [locacionesEcuador]);
+
+  const handleProvinciaChange = (e) => {
+    const provinciaa = e.target.value;
+    const provinciaSeleccionada = provincias.find(provincia => provincia.nombre === provinciaa);
+    setSelectedProvincia(provinciaSeleccionada);
+
+     const cantonesProvincia = locacionesEcuador[provinciaSeleccionada.id].cantones;
+    const cantonesArray = Object.values(cantonesProvincia).map(
+      (canton) => canton.canton
+    );
+    nuevaEstacion.provincia=provinciaSeleccionada.nombre
+    setCantones(cantonesArray); 
+  };
 
   const [nuevaEstacion, setNuevaEstacion] = useState({
     nombre: "",
-    ciudad: "", // Agregado el campo ciudad
+    provincia: "", // Agregado el campo ciudad
     canton: "",
     parroquia: "",
     longitud: "",
@@ -30,11 +54,12 @@ const AgregarEstacion = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     agregarEstacion(nuevaEstacion);
     // Limpiar el formulario después de enviar los datos
     setNuevaEstacion({
       nombre: "",
-      ciudad: "",
+      provincia: "",
       canton: "",
       parroquia: "",
       longitud: "",
@@ -67,10 +92,7 @@ const AgregarEstacion = () => {
             onSubmit={handleSubmit}
           >
             <div className="mb-3">
-              <label
-                htmlFor="nombre"
-                className="form-label font-bold"
-              >
+              <label htmlFor="nombre" className="form-label font-bold">
                 Nombre de la estación
               </label>
               <input
@@ -81,11 +103,58 @@ const AgregarEstacion = () => {
                 value={nuevaEstacion.nombre}
                 placeholder="Nombre de la estación"
                 required
+                minLength="5"
               />
             </div>
 
-            <div className="d-flex justify-between">
-              <div className="mb-3">
+            <div className="row mb-3">
+              <div className="col-md-4">
+                <label
+                  htmlFor="provinciaSelect"
+                  className="form-label font-bold"
+                >
+                  Provincia
+                </label>
+                <select
+                  id="provinciaSelect"
+                  className="form-control"
+                  name="provincia"
+                  onChange={handleProvinciaChange}
+                  required
+                  minLength="5"
+                >
+                  <option value="">Selecciona una provincia</option>
+                  {provincias.map((provincia, index) => (
+                    <option key={index} value={provincia.nombre}>
+                      {provincia.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="col-md-4">
+                <label htmlFor="cantonSelect" className="form-label font-bold">
+                  Cantón
+                </label>
+                <select
+                  id="cantonSelect"
+                  className="form-control"
+                  name="canton"
+                  onChange={handleChange}
+                  value={nuevaEstacion.canton}
+                  required
+                  minLength="5"
+                >
+                  <option value="">Selecciona un cantón</option>
+                  {cantones.map((canton, index) => (
+                    <option key={index} value={canton}>
+                      {canton}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="col-md-4">
                 <label htmlFor="parroquia" className="form-label font-bold">
                   Parroquia
                 </label>
@@ -97,34 +166,7 @@ const AgregarEstacion = () => {
                   value={nuevaEstacion.parroquia}
                   placeholder="Parroquia"
                   required
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="canton" className="form-label font-bold">
-                  Cantón
-                </label>
-                <input
-                  onChange={handleChange}
-                  type="text"
-                  className="form-control"
-                  name="canton"
-                  value={nuevaEstacion.canton}
-                  placeholder="Cantón"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="ciudad" className="form-label font-bold">
-                  Ciudad
-                </label>
-                <input
-                  onChange={handleChange}
-                  type="text"
-                  className="form-control"
-                  name="ciudad"
-                  value={nuevaEstacion.ciudad}
-                  placeholder="ciudad"
-                  required
+                  minLength="5"
                 />
               </div>
             </div>
@@ -141,11 +183,12 @@ const AgregarEstacion = () => {
                 value={nuevaEstacion.direccion}
                 placeholder="Dirección"
                 required
+                minLength="10"
               />
             </div>
 
-            <div className="d-flex justify-between">
-              <div className="mb-3">
+            <div className="row mb-3">
+              <div className="col-md-4">
                 <label htmlFor="latitud" className="form-label font-bold">
                   Latitud
                 </label>
@@ -159,7 +202,7 @@ const AgregarEstacion = () => {
                   required
                 />
               </div>
-              <div className="mb-3">
+              <div className="col-md-4">
                 <label htmlFor="longitud" className="form-label font-bold">
                   Longitud
                 </label>
@@ -168,29 +211,31 @@ const AgregarEstacion = () => {
                   type="text"
                   className="form-control"
                   name="longitud"
-                  placeholder="Longitud"
                   value={nuevaEstacion.longitud}
+                  placeholder="Longitud"
                   required
+                  minLength="5"
                 />
               </div>
-              <div className="mb-3">
+              <div className="col-md-4">
                 <label htmlFor="altura" className="form-label font-bold">
                   Altura
                 </label>
                 <input
                   onChange={handleChange}
-                  type="text"
+                  type="number"
                   className="form-control"
                   name="altura"
                   value={nuevaEstacion.altura}
                   placeholder="Altura"
                   required
+                  minLength="5"
                 />
               </div>
             </div>
 
-            <div className="d-flex justify-between">
-              <div className="mb-3">
+            <div className="row mb-3">
+              <div className="col-md-4">
                 <label
                   htmlFor="promotorTerreno"
                   className="form-label font-bold"
@@ -205,9 +250,10 @@ const AgregarEstacion = () => {
                   value={nuevaEstacion.promotorTerreno}
                   placeholder="Promotor de Terreno"
                   required
+                  minLength="5"
                 />
               </div>
-              <div className="mb-3">
+              <div className="col-md-4">
                 <label
                   htmlFor="institucionACargo"
                   className="form-label font-bold"
@@ -222,9 +268,10 @@ const AgregarEstacion = () => {
                   value={nuevaEstacion.institucionACargo}
                   placeholder="Institución a Cargo"
                   required
+                  minLength="5"
                 />
               </div>
-              <div className="mb-3">
+              <div className="col-md-4">
                 <label
                   htmlFor="manualAutomatica"
                   className="form-label font-bold"
@@ -248,21 +295,22 @@ const AgregarEstacion = () => {
             </div>
 
             <div className="mb-3">
-              <label className="form-label font-bold text-muted mx-2">
-                Imágen de la estación
+              <label className="form-label font-bold text-muted">
+                Imagen de la estación
               </label>
               <input type="file" className="form-control" name="image" />
             </div>
+
             <div className="mb-3 text-center">
-              <button className="btn bg-blue-400 text-white d-grid w-auto mx-2">
-                <i className="fa fa-save mr-2"></i>Guardar
-              </button>
               <button
                 type="button"
-                className="btn btn-danger bg-red-600 d-grid w-auto mx-2"
+                className="btn btn-danger bg-red-600 mx-2"
                 onClick={() => navigate("/estaciones")}
               >
                 <i className="fa fa-ban mr-2"></i>Cancelar
+              </button>
+              <button className="btn btn-success">
+                <i className="fa fa-save mr-2"></i>Guardar
               </button>
             </div>
           </form>

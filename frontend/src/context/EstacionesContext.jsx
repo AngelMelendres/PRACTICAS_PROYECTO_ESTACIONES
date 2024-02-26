@@ -1,10 +1,12 @@
 // ... (importaciones y código anterior)
 import React, { createContext, useEffect, useState } from "react";
 import UsuarioAxios from "../config/usuarioAxios";
+import locacioes from '../assets/data/locacionesEcuador.json'
 const EstacionesContext = createContext();
 
 const EstacionesProvider = ({ children }) => {
   const [estaciones, setEstaciones] = useState([]);
+  const [locacionesEcuador, setLocacionesEcuador] = useState([]);
   const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
@@ -21,6 +23,7 @@ const EstacionesProvider = ({ children }) => {
     };
 
     obtenerEstaciones();
+    obtenerlocacionesEcuador();
   }, []);
 
   const obtenerEstacion = async (id) => {
@@ -64,11 +67,20 @@ const EstacionesProvider = ({ children }) => {
     }
   };
 
+
+  const obtenerlocacionesEcuador = async () => {
+    try {
+      setLocacionesEcuador(locacioes);
+    } catch (error) {
+      console.error('Error al obtener las ubicaciones de Ecuador:', error);
+    }
+  }
   return (
     <EstacionesContext.Provider
       value={{
         estaciones,
         cargando,
+        locacionesEcuador,
         obtenerEstacion,
         agregarEstacion,
         eliminarEstacion,

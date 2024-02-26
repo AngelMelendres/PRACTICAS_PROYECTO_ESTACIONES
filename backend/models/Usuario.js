@@ -9,6 +9,13 @@ class Usuario {
     return rows[0];
   }
 
+  static async obtenerUsuarioPorCedula(cedula) {
+    const query = "SELECT * FROM usuarios WHERE cedula = $1";
+    const values = [cedula];
+    const { rows } = await pool.query(query, values);
+    return rows[0];
+  }
+
   static async obtenerTodosLosUsuarios() {
     const query = "SELECT * FROM usuarios";
     const { rows } = await pool.query(query);
@@ -23,19 +30,19 @@ class Usuario {
   }
 
   static async crearUsuario(usuarioData) {
-    const { cedula, nombres, apellidos, email, password, roles_idrol } =
-      usuarioData;
+    const { cedula, nombres, apellidos, email, password, estado, token } = usuarioData;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const query =
-      "INSERT INTO usuarios (cedula, nombres, apellidos, email, password, roles_idrol) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
+      "INSERT INTO usuarios (cedula, nombres, apellidos, email, password, estado, token) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
     const values = [
       cedula,
       nombres,
       apellidos,
       email,
       hashedPassword,
-      roles_idrol,
+      estado,
+      token,
     ];
     const { rows } = await pool.query(query, values);
     return rows[0];

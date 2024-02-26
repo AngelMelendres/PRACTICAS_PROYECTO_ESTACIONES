@@ -1,6 +1,6 @@
 import React from "react";
-import imageLogo2 from "/img/logo-espoch2.png"
-import imageLogo3 from "/img/logo-geaa.png"
+import imageLogo2 from "/img/logo-espoch2.png";
+import imageLogo3 from "/img/logo-geaa.png";
 
 const Foother = () => {
   return (
@@ -25,7 +25,7 @@ const Foother = () => {
               </p>
               <h6
                 className="text-white text-uppercase mt-4 mb-3"
-                style={{ letterSpacing: '5px' }}
+                style={{ letterSpacing: "5px" }}
               >
                 Síganos
               </h6>
@@ -44,7 +44,7 @@ const Foother = () => {
             <div className="col-lg-3 col-md-6 mb-3">
               <h5
                 className="text-white text-uppercase mb-4"
-                style={{ letterSpacing: '5px' }}
+                style={{ letterSpacing: "5px" }}
               >
                 Enláces
               </h5>
@@ -72,16 +72,17 @@ const Foother = () => {
             <div className="col-lg-4 col-md-6 mb-3">
               <h5
                 className="text-white text-uppercase mb-4"
-                style={{ letterSpacing: '5px' }}
+                style={{ letterSpacing: "5px" }}
               >
                 Contáctenos
               </h5>
               <p>
-                <i className="fa fa-map-marker-alt mr-2"></i>Panamericana Sur km 1
-                1/2, Riobamba, Ecuador
+                <i className="fa fa-map-marker-alt mr-2"></i>Panamericana Sur km
+                1 1/2, Riobamba, Ecuador
               </p>
               <p>
-                <i className="fa fa-phone-alt mr-2"></i>593(03) 2998-200 ext 2221
+                <i className="fa fa-phone-alt mr-2"></i>593(03) 2998-200 ext
+                2221
               </p>
               <p>
                 <i className="fa fa-envelope mr-2"></i>
@@ -89,22 +90,23 @@ const Foother = () => {
               </p>
             </div>
           </div>
-         {/*  <div className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center">
             <img className="px-3" src={imageLogo2}></img>
             <img className="px-3" src={imageLogo3}></img>
-          </div> */}
+          </div>
         </div>
         <div
           className="container-fluid bg-dark text-white border-top py-4 px-sm-3 px-md-5"
-          style={{ borderColor: 'rgba(256, 256, 256, .1)', borderWidth: '1px', borderStyle: 'solid' }}
+          style={{
+            borderColor: "rgba(256, 256, 256, .1)",
+            
+          }}
         >
           <div className="row">
             <div className="col-lg-6 text-center text-md-left mb-3 mb-md-0">
               <p className="m-0 text-white-50">Copyright &copy; 2023</p>
             </div>
-            <div className="col-lg-6 text-center text-md-right">
-              
-            </div>
+            <div className="col-lg-6 text-center text-md-right"></div>
           </div>
         </div>
         {/*  <!-- Footer End --> */}

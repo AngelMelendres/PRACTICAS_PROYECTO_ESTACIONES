@@ -6,7 +6,7 @@ import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
   const { isAuthenticated, informationUser } = useAuth();
- 
+
   return (
     <>
       <div>
@@ -49,7 +49,7 @@ const Header = () => {
         <div className="container-fluid position-relative nav-bar p-0">
           <div
             className="container-lg position-relative p-0 px-lg-3"
-            style={{ overlay: { zIndex: 100 }, content: { zIndex: 100 } }}
+            style={{ zIndex: 9 }}
           >
             <nav className="navbar navbar-expand-lg bg-light navbar-light shadow-lg py-3 py-lg-0 pl-3 pl-lg-4">
               <img src={imageLogo}></img>
@@ -60,7 +60,7 @@ const Header = () => {
                 <h2 className="m-0 text-info">Meteorológicas</h2>
               </Link>
               <button
-                class="navbar-toggler"
+                className="navbar-toggler"
                 type="button"
                 data-toggle="collapse"
                 data-target="#navbarSupportedContent"
@@ -68,10 +68,10 @@ const Header = () => {
                 aria-expanded="false"
                 aria-label="Toggle navigation"
               >
-                <span class="navbar-toggler-icon"></span>
+                <span className="navbar-toggler-icon"></span>
               </button>
               <div
-                class="collapse navbar-collapse"
+                className="collapse navbar-collapse"
                 id="navbarSupportedContent"
                 style={{ visibility: "visible" }}
               >
@@ -91,7 +91,7 @@ const Header = () => {
                       <Link to={"/estaciones"} className="dropdown-item">
                         Estaciones
                       </Link>
-                      
+
                       <Link to={"/sensores"} className="dropdown-item">
                         Sensores
                       </Link>
@@ -107,7 +107,7 @@ const Header = () => {
                     </div>
                   </div>
                   <Link to="/datosMeteorologicos" className="nav-item nav-link">
-                    Datos Meteorologicos
+                    Datos
                   </Link>
                   <Link href="" className="nav-item nav-link">
                     Mapas
@@ -119,43 +119,41 @@ const Header = () => {
                     Contacto
                   </Link>
 
-                  {isAuthenticated ? (
-                    <div className="nav-item dropdown">
-                      <Link
-                        href="#"
-                        className="nav-link dropdown-toggle"
-                        data-toggle="dropdown"
-                      >
-                        <i className="fa fa-user"></i>
-                      </Link>
-                      <div className="dropdown-menu border-0 rounded-0 m-0">
-                        <div className="d-flex">
-                          <div className="flex-shrink-0 me-3">
-                            <div className="px-1">
-                              <img
-                                src={imageAvatar}
-                                className="w-px-40 h-auto rounded-circle"
-                              />
-                            </div>
-                          </div>
-                          <div className="px-lg-2 ml-n1">
-                            <span className="fw-semibold d-block text-info text-truncate">
-                              {informationUser.nombre}
-                            </span>
-                            <small className="text-muted">Admin</small>
+                  <div className="nav-item dropdown">
+                    <Link
+                      href="#"
+                      className="nav-link dropdown-toggle"
+                      data-toggle="dropdown"
+                    >
+                      <i className="fa fa-user"></i>
+                    </Link>
+                    <div className="dropdown-menu border-0 rounded-0 m-0">
+                      <div className="d-flex">
+                        <div className="flex-shrink-0 me-3">
+                          <div className="px-1">
+                            <img
+                              src={imageAvatar}
+                              className="w-px-40 h-auto rounded-circle"
+                            />
                           </div>
                         </div>
-                        <div className="dropdown-divider"></div>
-                        <Link href="" className="dropdown-item">
-                          <i className="fa fa-users mr-2"></i>Administradores
-                        </Link>
-                        <div className="dropdown-divider"></div>
-                        <Link href="/signoff" className="dropdown-item">
-                          <i className="fa fa-power-off mr-2"></i>Cerrar sesión
-                        </Link>
+                        <div className="px-lg-2 ml-n1">
+                          <span className="fw-semibold d-block text-info text-truncate">
+                            nombreUsuarios
+                          </span>
+                          <small className="text-muted">Admin</small>
+                        </div>
                       </div>
+                      <div className="dropdown-divider"></div>
+                      <Link href="" className="dropdown-item">
+                        <i className="fa fa-users mr-2"></i>Administradores
+                      </Link>
+                      <div className="dropdown-divider"></div>
+                      <Link href="/signoff" className="dropdown-item">
+                        <i className="fa fa-power-off mr-2"></i>Cerrar sesión
+                      </Link>
                     </div>
-                  ) : null}
+                  </div>
                 </div>
               </div>
             </nav>

@@ -17,7 +17,7 @@ class Estacion {
   static async crearEstacion(estacionData) {
     const {
       nombre,
-      ciudad,
+      provincia,
       canton,
       parroquia,
       longitud,
@@ -29,10 +29,10 @@ class Estacion {
       manualAutomatica,
     } = estacionData;
     const query =
-      "INSERT INTO estaciones (nombre, ciudad, canton, parroquia, longitud, latitud, altura, direccion, promotorTerreno, institucionACargo, manualAutomatica) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *";
+      "INSERT INTO estaciones (nombre, provincia, canton, parroquia, longitud, latitud, altura, direccion, promotorTerreno, institucionACargo, manualAutomatica) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *";
     const values = [
       nombre,
-      ciudad,
+      provincia,
       canton,
       parroquia,
       longitud,
@@ -50,7 +50,7 @@ class Estacion {
   static async actualizarEstacion(id, estacionData) {
     const {
       nombre,
-      ciudad,
+      provincia,
       canton,
       parroquia,
       longitud,
@@ -62,10 +62,10 @@ class Estacion {
       manualAutomatica,
     } = estacionData;
     const query =
-      "UPDATE estaciones SET nombre = $1, ciudad = $2, canton = $3, parroquia = $4, longitud = $5, latitud = $6, altura = $7, direccion = $8, promotorTerreno = $9, institucionACargo = $10, manualAutomatica = $11 WHERE idestacion = $12 RETURNING *";
+      "UPDATE estaciones SET nombre = $1, provincia = $2, canton = $3, parroquia = $4, longitud = $5, latitud = $6, altura = $7, direccion = $8, promotorTerreno = $9, institucionACargo = $10, manualAutomatica = $11 WHERE idestacion = $12 RETURNING *";
     const values = [
       nombre,
-      ciudad,
+      provincia,
       canton,
       parroquia,
       longitud,

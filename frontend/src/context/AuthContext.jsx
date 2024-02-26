@@ -1,20 +1,20 @@
 import React, { createContext, useEffect, useState } from "react";
 import UsuarioAxios from "../config/usuarioAxios";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [informationUser, setInformationUser] = useState({
-    nombre: "",
-  });
+  const [cargando, setCargando] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const authUser = async () => {
+    const autenticarUsuario = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
-        setIsAuthenticated(false);
+        setCargando(false);
         return;
       }
 
@@ -24,16 +24,18 @@ const AuthProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-      try {
-        const data = await UsuarioAxios("/usuarios/perfil", config);
-        setAuth(data);
-        setInformationUser({
-          nombre: auth.data.nombre,
-        });
-      } catch (error) {}
-    };
 
-    authUser();
+      try {
+        const { data } = await UsuarioAxios("/usuarios/perfil", config);
+        setAuth(data);
+        // navigate('/proyectos')
+      } catch (error) {
+        setAuth({});
+      }
+
+      setCargando(false);
+    };
+    autenticarUsuario();
   }, []);
 
   const cerrarSesionAuth = () => {
@@ -41,9 +43,7 @@ const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ setAuth, auth, isAuthenticated, informationUser }}
-    >
+    <AuthContext.Provider value={{ auth, setAuth, cargando, cerrarSesionAuth }}>
       {children}
     </AuthContext.Provider>
   );
