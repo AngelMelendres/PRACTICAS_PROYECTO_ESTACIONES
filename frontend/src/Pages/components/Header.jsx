@@ -5,7 +5,12 @@ import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
-  const { isAuthenticated, informationUser } = useAuth();
+  const { auth, cerrarSesionAuth } = useAuth();
+
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    cerrarSesionAuth();
+  };
 
   return (
     <>
@@ -127,32 +132,64 @@ const Header = () => {
                     >
                       <i className="fa fa-user"></i>
                     </Link>
-                    <div className="dropdown-menu border-0 rounded-0 m-0">
-                      <div className="d-flex">
-                        <div className="flex-shrink-0 me-3">
-                          <div className="px-1">
-                            <img
-                              src={imageAvatar}
-                              className="w-px-40 h-auto rounded-circle"
-                            />
+                    {auth._cedula ? (
+                      <div className="dropdown-menu border-0 rounded-0 m-0">
+                        <div className="d-flex">
+                          <div className="flex-shrink-0 me-3">
+                            <div className="px-1">
+                              <img
+                                src={imageAvatar}
+                                className="w-px-40 h-auto rounded-circle"
+                              />
+                            </div>
+                          </div>
+                          <div className="px-lg-2 ml-n1">
+                            <span className="fw-semibold d-block text-info text-truncate">
+                              {auth.email}
+                            </span>
+                            <small className="text-muted">{auth._cedula}</small>
                           </div>
                         </div>
-                        <div className="px-lg-2 ml-n1">
-                          <span className="fw-semibold d-block text-info text-truncate">
-                            nombreUsuarios
-                          </span>
-                          <small className="text-muted">Admin</small>
-                        </div>
+                        <div className="dropdown-divider"></div>
+                        <Link href="" className="dropdown-item">
+                          <i className="fa fa-users mr-2"></i>Administradores
+                        </Link>
+                        <div className="dropdown-divider"></div>
+                        <button
+                          className="dropdown-item"
+                          onClick={handleLogOut}
+                        >
+                          <i className="fa fa-power-off mr-2"></i>Cerrar sesión
+                        </button>
                       </div>
-                      <div className="dropdown-divider"></div>
-                      <Link href="" className="dropdown-item">
-                        <i className="fa fa-users mr-2"></i>Administradores
-                      </Link>
-                      <div className="dropdown-divider"></div>
-                      <Link href="/signoff" className="dropdown-item">
-                        <i className="fa fa-power-off mr-2"></i>Cerrar sesión
-                      </Link>
-                    </div>
+                    ) : (
+                      <div className="dropdown-menu border-0 rounded-0 m-0">
+                        <div className="d-flex">
+                          <div className="flex-shrink-0 me-3">
+                            <div className="px-1">
+                              <img
+                                src={imageAvatar}
+                                className="w-px-40 h-auto rounded-circle"
+                              />
+                            </div>
+                          </div>
+                          <div className="px-lg-2 ml-n1">
+                            <span className="fw-semibold d-block text-info text-truncate">
+                              Inicio Sesion
+                            </span>
+                          </div>
+                        </div>
+                        <div className="dropdown-divider"></div>
+
+                        <Link
+                          to={"/login"}
+                          className="dropdown-item"
+                          onClick={handleLogOut}
+                        >
+                          <i className="fa fa-power-off mr-2"></i>Login
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
