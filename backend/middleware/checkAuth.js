@@ -13,13 +13,18 @@ const checkAuth = async (req, res, next) => {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-       const query = "SELECT * FROM usuarios WHERE cedula = $1";
+      const query = "SELECT * FROM usuarios WHERE cedula = $1";
       const values = [decoded.cedula];
+
       const { rows } = await pool.query(query, values);
 
-      req.usuario = rows[0];
-
-      console.log(decoded)
+      req.usuario = {
+        _cedula: rows[0].cedula,
+        nombre: rows[0].nombres,
+        email: rows[0].email,
+        token: token,
+      };
+      console.log(decoded);
 
       return next();
     } catch (error) {

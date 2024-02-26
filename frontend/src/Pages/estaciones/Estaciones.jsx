@@ -2,7 +2,7 @@ import React from "react";
 import ItemEstacion from "./ItemEstacion";
 import useEstaciones from "../../hooks/useEstaciones";
 import { Link } from "react-router-dom";
-import Map from "../components/MapaEstaciones";
+import MapaEstaciones from "../components/MapaEstaciones";
 import Subnavbar from "../components/SubNavbar";
 import useAuth from "../../hooks/useAuth";
 
@@ -11,7 +11,10 @@ const Estaciones = () => {
   const { auth } = useAuth();
   return (
     <>
-      <Subnavbar />
+      <Subnavbar
+        titulo={"Estaciones meteorológicas de la Espoch"}
+        path={"ESTACIONES"}
+      />
       <div className="container-fluid py-3">
         <div className="container pt-5 pb-3">
           <div className="text-center mb-3 pb-3">
@@ -27,7 +30,7 @@ const Estaciones = () => {
       </div>
 
       <div>
-        <Map />
+        <MapaEstaciones />
         {/* <!-- Estaciones Start --> */}
         <div className=" py-3">
           <div className="container pt-5 pb-3">

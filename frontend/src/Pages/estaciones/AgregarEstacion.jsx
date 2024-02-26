@@ -81,7 +81,7 @@ const AgregarEstacion = () => {
     agregarEstacion(formData);
 
     // Limpiar el formulario después de enviar los datos
-/*     setNuevaEstacion({
+     setNuevaEstacion({
       nombre: "",
       provincia: "",
       canton: "",
@@ -95,9 +95,7 @@ const AgregarEstacion = () => {
       manualAutomatica: "",
     });
     // Redirige to the list of stations
-    navigate("/estaciones"); */
-
-    console.log(formData)
+    navigate("/estaciones"); 
   };
 
   return (

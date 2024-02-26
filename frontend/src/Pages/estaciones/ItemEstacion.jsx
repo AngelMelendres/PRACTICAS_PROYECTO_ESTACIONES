@@ -1,10 +1,12 @@
 import React from "react";
 import useEstaciones from "../../hooks/useEstaciones";
+import useAuth from "../../hooks/useAuth";
 const ItemEstacion = ({ estacion }) => {
   const { eliminarEstacion, actualizarEstacion } = useEstaciones();
+  const { auth } = useAuth();
 
   const handleclickDelete = () => {
-     eliminarEstacion(estacion.idestacion); 
+    eliminarEstacion(estacion.idestacion);
   };
 
   return (
@@ -12,6 +14,7 @@ const ItemEstacion = ({ estacion }) => {
       <div className="col-lg-4 col-md-6 mb-4">
         <div className="package-item bg-white mb-2">
           <img
+            style={{ height: "300px", width: "100%" }}
             className="img-fluid"
             src={estacion.imagen}
           ></img>
@@ -40,17 +43,19 @@ const ItemEstacion = ({ estacion }) => {
                 </h6>
               </div>
             </div>
-            <div className="text-center pt-3">
-              <a className="btn btn-info d-grid w-auto mx-2" href="">
-                <i className="fa fa-pen mr-2"></i>Editar
-              </a>
-              <a
-                className="btn btn-danger d-grid w-auto mx-2"
-                onClick={handleclickDelete}
-              >
-                <i className="fa fa-trash mr-2"></i>Eliminar
-              </a>
-            </div>
+            {auth._cedula ? (
+              <div className="text-center pt-3">
+                <a className="btn btn-info d-grid w-auto mx-2" href="">
+                  <i className="fa fa-pen mr-2"></i>Editar
+                </a>
+                <a
+                  className="btn btn-danger d-grid w-auto mx-2"
+                  onClick={handleclickDelete}
+                >
+                  <i className="fa fa-trash mr-2"></i>Eliminar
+                </a>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>
