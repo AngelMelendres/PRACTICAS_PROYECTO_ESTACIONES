@@ -146,9 +146,8 @@ const AgregarEstacion = () => {
                   name="provincia"
                   onChange={handleProvinciaChange}
                   required
-                  minLength="5"
                 >
-                  <option value="">Selecciona una provincia</option>
+                  <option value="" >Selecciona una provincia</option>
                   {provincias.map((provincia, index) => (
                     <option key={index} value={provincia.nombre}>
                       {provincia.nombre}

@@ -1,10 +1,14 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import UsuarioAxios from "../config/usuarioAxios";
 const SensoresContext = createContext();
 
 const SensoresProvider = ({ children }) => {
   const [sensores, setSensores] = useState([]);
   const [cargando, setCargando] = useState(false);
+
+  useEffect(() => {
+    obtenerSensores();
+  },[sensores])
 
   const obtenerSensores = async () => {
     try {

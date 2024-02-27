@@ -170,31 +170,31 @@ const Index = () => {
         {/* Fin Acerca */}
 
         {/* Objetivos */}
-        <div class="container-fluid py-3">
-          <div class="container pt-5 pb-3">
-            <div class="text-center mb-3 pb-3">
-              <h6 class="text-info text-uppercase" style={{ letterSpacing: "5px" }}>
+        <div className="container-fluid py-3">
+          <div className="container pt-5 pb-3">
+            <div className="text-center mb-3 pb-3">
+              <h6 className="text-info text-uppercase" style={{ letterSpacing: "5px" }}>
                 Objetivos
               </h6>
               <h1>Principales Objetivos del Proyecto</h1>
             </div>
-            <div class="row">
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="service-item bg-white text-center mb-2 py-5 px-4">
-                  <i class="fa fa-2x fa-chart-line mx-auto mb-4"></i>
-                  <h5 class="mb-2">Monitoreo</h5>
-                  <p class="m-0">
+            <div className="row">
+              <div className="col-lg-4 col-md-6 mb-4">
+                <div className="service-item bg-white text-center mb-2 py-5 px-4">
+                  <i className="fa fa-2x fa-chart-line mx-auto mb-4"></i>
+                  <h5 className="mb-2">Monitoreo</h5>
+                  <p className="m-0">
                     Monitorear, analizar y depurar los datos de los parámetros
                     meteorológicos, usando la red de estaciones del Grupo de
                     Energías Alternativas y Ambiente GEEA de la ESPOCH
                   </p>
                 </div>
               </div>
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="service-item bg-white text-center mb-2 py-5 px-4">
-                  <i class="fa fa-2x fa-bolt mx-auto mb-4"></i>
-                  <h5 class="mb-2">Caracterización</h5>
-                  <p class="m-0">
+              <div className="col-lg-4 col-md-6 mb-4">
+                <div className="service-item bg-white text-center mb-2 py-5 px-4">
+                  <i className="fa fa-2x fa-bolt mx-auto mb-4"></i>
+                  <h5 className="mb-2">Caracterización</h5>
+                  <p className="m-0">
                     Caracterizar y modelar la dinámica atmosférica de las zonas
                     de interés para conocer los flujos de energía convectiva y
                     mecánica, perfiles de viento y temperatura, transferencia de
@@ -202,11 +202,11 @@ const Index = () => {
                   </p>
                 </div>
               </div>
-              <div class="col-lg-4 col-md-6 mb-4">
-                <div class="service-item bg-white text-center mb-2 py-5 px-4">
-                  <i class="fa fa-2x fa-solar-panel mx-auto mb-4"></i>
-                  <h5 class="mb-2">Diseño</h5>
-                  <p class="m-0">
+              <div className="col-lg-4 col-md-6 mb-4">
+                <div className="service-item bg-white text-center mb-2 py-5 px-4">
+                  <i className="fa fa-2x fa-solar-panel mx-auto mb-4"></i>
+                  <h5 className="mb-2">Diseño</h5>
+                  <p className="m-0">
                     Diseñar y construir prototipos de generación de energía
                     eólica y solar que se ajusten a las condiciones físicas y
                     meteorológicas de la zona

@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ItemSensor from "./ItemSensor";
 import Subnavbar from "../components/SubNavbar";
 import { Link } from "react-router-dom";
+import useSensores from "../../hooks/useSensores";
+import useAuth from "../../hooks/useAuth";
 
 const Sensores = () => {
+  const { obtenerSensores, sensores } = useSensores();
+  const { auth } = useAuth();
+  useEffect(() => {
+    obtenerSensores();
+  }, []);
   return (
     <>
       <Subnavbar
@@ -23,20 +30,24 @@ const Sensores = () => {
             <h2>Información de los Sensores</h2>
           </div>
           <div className="row">
-            <ItemSensor />
+            {sensores.map((sensor) => (
+              <ItemSensor key={sensor.idsensor} sensor={sensor} />
+            ))}
 
-            <div className="col-lg-4 col-md-6 mb-4">
-              <div className="package-item bg-white mb-2">
-                <div className="p-3">
-                  <Link
-                    to={"/sensores/crear"}
-                    className="h6 text-decoration-none text-info"
-                  >
-                    <i className="fa fa-plus text-info mr-2"></i>Añadir sensor
-                  </Link>
+            {auth._cedula ? (
+              <div className="col-lg-4 col-md-6 mb-4">
+                <div className="package-item bg-white mb-2">
+                  <div className="p-3">
+                    <Link
+                      to={"/sensores/crear"}
+                      className="h6 text-decoration-none text-info"
+                    >
+                      <i className="fa fa-plus text-info mr-2"></i>Añadir sensor
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : null}
           </div>
         </div>
       </div>

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useSensores from "../../hooks/useSensores";
 
 const AgregarSensor = () => {
   const navigate = useNavigate();
+  const { agregarSensor } = useSensores();
   const [nuevoSensor, setNuevoSensor] = useState({
     nombre: "",
     modelo: "",
@@ -28,8 +30,10 @@ const AgregarSensor = () => {
     formData.append("marca", nuevoSensor.marca);
     formData.append("imagen", imagen);
 
+    agregarSensor(formData);
+
     //limpiar input
-    setNuevoSensor({
+     setNuevoSensor({
       nombre: "",
       modelo: "",
       numeroSerie: "",
@@ -39,7 +43,7 @@ const AgregarSensor = () => {
     });
 
     // Redirige to the list of stations
-    navigate("/sensores");
+    navigate("/sensores"); 
   };
 
   const handleChange = (e) => {
@@ -65,7 +69,7 @@ const AgregarSensor = () => {
             {/* Nombre */}
             <div className="mb-3">
               <label htmlFor="nombre" className="form-label font-bold">
-                Nombre de la estación
+                Nombre del sensor
               </label>
               <input
                 onChange={handleChange}
@@ -73,76 +77,9 @@ const AgregarSensor = () => {
                 className="form-control"
                 name="nombre"
                 value={nuevoSensor.nombre}
-                placeholder="Nombre de la estación"
+                placeholder="Nombre del sensor"
                 required
                 minLength="5"
-              />
-            </div>
-
-            {/* Modelo */}
-            <div className="mb-3">
-              <label htmlFor="modelo" className="form-label font-bold">
-                Modelo
-              </label>
-              <input
-                onChange={handleChange}
-                type="text"
-                className="form-control"
-                name="modelo"
-                value={nuevoSensor.modelo}
-                placeholder="Modelo"
-                required
-              />
-            </div>
-
-            {/* Número de Serie */}
-            <div className="mb-3">
-              <label htmlFor="numeroSerie" className="form-label font-bold">
-                Número de Serie
-              </label>
-              <input
-                onChange={handleChange}
-                type="text"
-                className="form-control"
-                name="numeroSerie"
-                value={nuevoSensor.numeroSerie}
-                placeholder="Número de Serie"
-                required
-              />
-            </div>
-
-            {/* Estado */}
-            <div className="mb-3">
-              <label htmlFor="estado" className="form-label font-bold">
-                Estado
-              </label>
-              <input
-                onChange={handleChange}
-                type="text"
-                className="form-control"
-                name="estado"
-                value={nuevoSensor.estado}
-                placeholder="Estado"
-                required
-              />
-            </div>
-
-            {/* Especificaciones */}
-            <div className="mb-3">
-              <label
-                htmlFor="especificaciones"
-                className="form-label font-bold"
-              >
-                Especificaciones
-              </label>
-              <input
-                onChange={handleChange}
-                type="text"
-                className="form-control"
-                name="especificaciones"
-                value={nuevoSensor.especificaciones}
-                placeholder="Especificaciones"
-                required
               />
             </div>
 
@@ -159,6 +96,76 @@ const AgregarSensor = () => {
                 value={nuevoSensor.marca}
                 placeholder="Marca"
                 required
+                minLength="2"
+              />
+            </div>
+
+            {/* Modelo */}
+            <div className="mb-3">
+              <label htmlFor="modelo" className="form-label font-bold">
+                Modelo
+              </label>
+              <input
+                onChange={handleChange}
+                type="text"
+                className="form-control"
+                name="modelo"
+                value={nuevoSensor.modelo}
+                placeholder="Modelo"
+                required
+                minLength="2"
+              />
+            </div>
+
+            {/* Número de Serie */}
+            <div className="mb-3">
+              <label htmlFor="numeroSerie" className="form-label font-bold">
+                Número de Serie
+              </label>
+              <input
+                onChange={handleChange}
+                type="text"
+                className="form-control"
+                name="numeroSerie"
+                value={nuevoSensor.numeroSerie}
+                placeholder="Número de Serie"
+                required
+                minLength="2"
+              />
+            </div>
+
+            {/* Estado */}
+            <div className="mb-3">
+              <label htmlFor="estado" className="form-label font-bold">
+                Estado
+              </label>
+              <select
+                onChange={handleChange}
+                className="form-control"
+                name="estado"
+                required
+              >
+                <option value="" >Selecciona un estado</option>
+                <option value="Activo">Activo</option>
+                <option value="Inactivo">Inactivo</option>
+              </select>
+            </div>
+
+            {/* Especificaciones */}
+            <div className="mb-3">
+              <label
+                htmlFor="especificaciones"
+                className="form-label font-bold"
+              >
+                Especificaciones
+              </label>
+              <textarea
+                onChange={handleChange}
+                className="form-control"
+                name="especificaciones"
+                value={nuevoSensor.especificaciones}
+                placeholder="Especificaciones"
+                required
               />
             </div>
 
@@ -174,6 +181,7 @@ const AgregarSensor = () => {
                   type="file"
                   onChange={handleimagenChange}
                   accept="image/*"
+                  required
                 ></input>
               </div>
             </div>

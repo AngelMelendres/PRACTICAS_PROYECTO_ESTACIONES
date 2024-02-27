@@ -22,10 +22,10 @@ class Sensor {
       estado,
       especificaciones,
       marca,
-      estaciones_idestacion,
+      imagen,
     } = sensorData;
     const query =
-      "INSERT INTO sensores (nombre, modelo, numeroSerie, estado, especificaciones, marca, estaciones_idestacion) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
+      "INSERT INTO sensores (nombre, modelo, numeroSerie, estado, especificaciones, marca, imagen) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
     const values = [
       nombre,
       modelo,
@@ -33,7 +33,7 @@ class Sensor {
       estado,
       especificaciones,
       marca,
-      estaciones_idestacion,
+      imagen,
     ];
     const { rows } = await pool.query(query, values);
     return rows[0];
