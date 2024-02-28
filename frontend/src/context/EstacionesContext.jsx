@@ -6,6 +6,9 @@ const EstacionesContext = createContext();
 
 const EstacionesProvider = ({ children }) => {
   const [estaciones, setEstaciones] = useState([]);
+  const [estacion, setEstacion] = useState({});
+  const [estacionEditar, setEstacionEditar] = useState();
+
   const [locacionesEcuador, setLocacionesEcuador] = useState([]);
   const [cargando, setCargando] = useState(false);
 
@@ -29,7 +32,7 @@ const EstacionesProvider = ({ children }) => {
   const obtenerEstacion = async (id) => {
     try {
       const { data } = await UsuarioAxios.get(`/estaciones/${id}`);
-      return data;
+      setEstacionEditar(data);
     } catch (error) {
       console.error("Error al obtener la estación:", error);
     }
@@ -59,14 +62,16 @@ const EstacionesProvider = ({ children }) => {
     }
   };
 
-  const actualizarEstacion = async (id, nuevaInformacion) => {
+  const actualizarEstacion = async (idestacion, estacionData) => {
     try {
-      const { data } = await UsuarioAxios.put(
-        `/estaciones/${id}`,
-        nuevaInformacion
-      );
+      const { data } = await UsuarioAxios.put(`/estaciones/${idestacion}`,estacionData,{
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
       setEstaciones(
-        estaciones.map((estacion) => (estacion.id === id ? data : estacion))
+        estaciones.map((estacion) => (estacion.idestacion === idestacion ? data : estacion))
       );
     } catch (error) {
       console.error("Error al actualizar la estación:", error);
@@ -84,12 +89,15 @@ const EstacionesProvider = ({ children }) => {
     <EstacionesContext.Provider
       value={{
         estaciones,
+        estacion,
         cargando,
         locacionesEcuador,
+        estacionEditar,
         obtenerEstacion,
         agregarEstacion,
         eliminarEstacion,
         actualizarEstacion,
+        setEstacion,
       }}
     >
       {children}

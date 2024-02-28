@@ -43,26 +43,40 @@ class Sensor {
     const {
       nombre,
       modelo,
-      numeroSerie,
+      numeroserie,
       estado,
       especificaciones,
       marca,
-      estaciones_idestacion,
+      imagen,
     } = sensorData;
-    const query =
-      "UPDATE sensores SET nombre = $1, modelo = $2, numeroSerie = $3, estado = $4, especificaciones = $5, marca = $6, estaciones_idestacion = $7 WHERE idsensor = $8 RETURNING *";
-    const values = [
-      nombre,
-      modelo,
-      numeroSerie,
-      estado,
-      especificaciones,
-      marca,
-      estaciones_idestacion,
-      id,
-    ];
-    const { rows } = await pool.query(query, values);
-    return rows[0];
+
+    try {
+      let query =
+        "UPDATE sensores SET nombre = $1, modelo = $2, numeroSerie = $3, estado = $4, especificaciones = $5, marca = $6";
+      let values = [
+        nombre,
+        modelo,
+        numeroserie,
+        estado,
+        especificaciones,
+        marca,
+      ];
+      // Si hay imagen, añadir la actualización de la imagen a la consulta
+      if (imagen) {
+        query += ", imagen = $7";
+        values.push(imagen);
+      }
+
+      // Añadir la condición de actualización basada en el idestacion
+      values.push(id);
+      query += " WHERE idsensor = $" + values.length + " RETURNING *";
+
+      const { rows } = await pool.query(query, values);
+      return rows[0];
+
+    } catch (error) {
+      throw new Error("Error al actualizar el sensor: " + error.message);
+    }
   }
 
   static async eliminarSensor(id) {

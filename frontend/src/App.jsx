@@ -18,6 +18,7 @@ import AgregarEquipoTecnico from "./Pages/equipoTecnico/AgregarEquipoTecnico";
 import DatosMeteorologicos from "./Pages/estaciones/DatosMeteorologicos";
 import AgregarSensor from "./Pages/sensores/AgregarSensor";
 import { SensoresProvider } from "./context/SensoresContext";
+import EditarSensor from "./Pages/sensores/EditarSensor";
 
 function App() {
   return (
@@ -31,31 +32,36 @@ function App() {
                 <Route path="/estaciones" exact element={<Estaciones />} />
                 <Route path="/sensores" exact element={<Sensores />} />
                 <Route path="/login" exact element={<Login />} />
-
                 <Route
                   path="/datosMeteorologicos"
                   element={<DatosMeteorologicos />}
                 ></Route>
-
                 <Route
                   path="/equipoTecnico"
                   element={<EquipoTecnico />}
                 ></Route>
-
-                <Route path="/chart" element={<Charts />}></Route>
-
                 <Route
                   path="/mantenimiento"
                   element={<Mantenimiento />}
                 ></Route>
+
+                {/* RUTAS PROTEGIDAS */}
                 <Route element={<PrivateRoute />}>
                   <Route
                     path="/estaciones/crear"
                     element={<AgregarEstacion />}
                   ></Route>
                   <Route
+                    path="/estaciones/editar/:id"
+                    element={<EditarEstacion/>}
+                  ></Route>
+                  <Route
                     path="/sensores/crear"
                     element={<AgregarSensor />}
+                  ></Route>
+                  <Route
+                    path="/sensores/editar/:id"
+                    element={<EditarSensor />}
                   ></Route>
 
                   <Route
@@ -68,6 +74,7 @@ function App() {
                   ></Route>
                 </Route>
 
+                {/* RUTA $404 */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </RootLayout>

@@ -16,7 +16,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-
 export const obtenerSensores = async (req, res) => {
   try {
     const sensores = await Sensor.obtenerTodosLosSensores();
@@ -56,10 +55,10 @@ export const crearSensor = async (req, res) => {
       fs.renameSync(imagen.path, rutaImagen);
 
       // Guarda la dirección de la imagen junto con otros datos en la base de datos
-       await Sensor.crearSensor({
+      await Sensor.crearSensor({
         ...sensorData,
         imagen: process.env.HOST + "/" + rutaImagen,
-      }); 
+      });
       console.log(rutaImagen);
       res.json({ mensaje: "Sensor creado exitosamente" });
     });
@@ -69,9 +68,30 @@ export const crearSensor = async (req, res) => {
 };
 
 export const actualizarSensor = async (req, res) => {
-  const { id } = req.params;
-  const sensorData = req.body;
   try {
+    upload.single("imagen")(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(500).json({ error: err.message });
+      } else if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      const { id } = req.params;
+      const sensorData = req.body;
+
+      if (req.file) {
+        const imagen = req.file;
+        // Mueve la imagen desde la ubicación temporal a la carpeta deseada en tu proyecto
+        const rutaImagen = "uploads/" + imagen.filename; // Ruta de la imagen en tu proyecto
+        fs.renameSync(imagen.path, rutaImagen);
+        await Sensor.actualizarSensor(id, {
+          ...sensorData,
+          imagen: process.env.HOST + "/" + rutaImagen,
+        });
+      } else {
+        await Sensor.actualizarSensor(id, sensorData);
+      }
+    });
+
     const sensorActualizado = await Sensor.actualizarSensor(id, sensorData);
     if (!sensorActualizado) {
       return res.status(404).json({ mensaje: "Sensor no encontrado" });

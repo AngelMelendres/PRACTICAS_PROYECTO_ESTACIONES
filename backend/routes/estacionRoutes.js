@@ -13,7 +13,7 @@ const router = express.Router();
 router.get("/", obtenerEstaciones);
 router.get("/:id", obtenerEstacionPorId);
 router.post("/", crearEstacion);
-router.put("/:id", actualizarEstacion); // Descomenta esta línea
+router.put("/:idestacion", actualizarEstacion); 
 router.delete("/:id", eliminarEstacion); // Descomenta esta línea
 
 export default router;

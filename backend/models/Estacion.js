@@ -59,29 +59,45 @@ class Estacion {
       latitud,
       altura,
       direccion,
-      promotorTerreno,
-      institucionACargo,
-      manualAutomatica,
+      promotorterreno,
+      institucionacargo,
+      manualautomatica,
+      imagen,
     } = estacionData;
-    const query =
-      "UPDATE estaciones SET nombre = $1, provincia = $2, canton = $3, parroquia = $4, longitud = $5, latitud = $6, altura = $7, direccion = $8, promotorTerreno = $9, institucionACargo = $10, manualAutomatica = $11 WHERE idestacion = $12 RETURNING *";
-    const values = [
-      nombre,
-      provincia,
-      canton,
-      parroquia,
-      longitud,
-      latitud,
-      altura,
-      direccion,
-      promotorTerreno,
-      institucionACargo,
-      manualAutomatica,
-      id,
-    ];
-    const { rows } = await pool.query(query, values);
-    return rows[0];
-  }
+    
+    try {
+      let query = "UPDATE estaciones SET nombre = $1, provincia = $2, canton = $3, parroquia = $4, longitud = $5, latitud = $6, altura = $7, direccion = $8, promotorterreno = $9, institucionacargo = $10, manualautomatica = $11";
+      let values = [
+        nombre,
+        provincia,
+        canton,
+        parroquia,
+        longitud,
+        latitud,
+        altura,
+        direccion,
+        promotorterreno,
+        institucionacargo,
+        manualautomatica
+      ];
+
+      // Si hay imagen, añadir la actualización de la imagen a la consulta
+      if (imagen) {
+        query += ", imagen = $12";
+        values.push(imagen);
+      }
+
+      // Añadir la condición de actualización basada en el idestacion
+      values.push(id);
+      query += " WHERE idestacion = $" + (values.length) + " RETURNING *";
+
+      const { rows } = await pool.query(query, values);
+      return rows[0];
+    } catch (error) {
+      throw new Error("Error al actualizar la estación: " + error.message);
+    }
+}
+
 
   static async eliminarEstacion(id) {
     const query = "DELETE FROM estaciones WHERE idestacion = $1 RETURNING *";

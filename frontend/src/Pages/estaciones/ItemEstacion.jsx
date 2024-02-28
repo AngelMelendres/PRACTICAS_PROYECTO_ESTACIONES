@@ -1,12 +1,38 @@
 import React from "react";
 import useEstaciones from "../../hooks/useEstaciones";
 import useAuth from "../../hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
 const ItemEstacion = ({ estacion }) => {
-  const { eliminarEstacion, actualizarEstacion } = useEstaciones();
+  const { eliminarEstacion, setEstacion } = useEstaciones();
   const { auth } = useAuth();
+  const navigate = useNavigate();
 
   const handleclickDelete = () => {
-    eliminarEstacion(estacion.idestacion);
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Una vez eliminada, no podrás recuperar esta estación.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        eliminarEstacion(estacion.idestacion);
+        Swal.fire(
+          "Eliminada",
+          "La estación ha sido eliminada correctamente.",
+          "success"
+        );
+      }
+    });
+  };
+
+  const handleSelectEstacion = () => {
+    navigate(`/estaciones/editar/${estacion.idestacion}`);
   };
 
   return (
@@ -45,15 +71,18 @@ const ItemEstacion = ({ estacion }) => {
             </div>
             {auth._cedula ? (
               <div className="text-center pt-3">
-                <a className="btn btn-info d-grid w-auto mx-2" href="">
+                <button
+                  onClick={handleSelectEstacion}
+                  className="btn btn-info d-grid w-auto mx-2"
+                >
                   <i className="fa fa-pen mr-2"></i>Editar
-                </a>
-                <a
+                </button>
+                <button
                   className="btn btn-danger d-grid w-auto mx-2"
                   onClick={handleclickDelete}
                 >
                   <i className="fa fa-trash mr-2"></i>Eliminar
-                </a>
+                </button>
               </div>
             ) : null}
           </div>

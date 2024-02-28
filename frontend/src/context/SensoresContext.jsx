@@ -5,10 +5,10 @@ const SensoresContext = createContext();
 const SensoresProvider = ({ children }) => {
   const [sensores, setSensores] = useState([]);
   const [cargando, setCargando] = useState(false);
-
+  const [sensorEditar, setSensorEditar] = useState();
   useEffect(() => {
     obtenerSensores();
-  },[sensores])
+  }, [sensores]);
 
   const obtenerSensores = async () => {
     try {
@@ -25,7 +25,7 @@ const SensoresProvider = ({ children }) => {
   const obtenerSensor = async (id) => {
     try {
       const { data } = await UsuarioAxios.get(`/sensores/${id}`);
-      return data;
+      setSensorEditar(data);
     } catch (error) {
       console.error("Error al obtener el sensor:", error);
     }
@@ -52,16 +52,29 @@ const SensoresProvider = ({ children }) => {
       console.error("Error al eliminar el sensor:", error);
     }
   };
+  const actualizarSensor = async (id, nuevoSensor) => {
+    try {
+      const { data } = await UsuarioAxios.put(`/sensores/${id}`, nuevoSensor, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } catch (error) {
+      console.error("Error al actualizar el sensor:", error);
+    }
+  };
 
   return (
     <SensoresContext.Provider
       value={{
         sensores,
         cargando,
+        sensorEditar,
         obtenerSensores,
         obtenerSensor,
         agregarSensor,
         eliminarSensor,
+        actualizarSensor
       }}
     >
       {children}

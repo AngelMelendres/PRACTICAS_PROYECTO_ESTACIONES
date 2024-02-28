@@ -1,7 +1,7 @@
 import Estacion from "../models/Estacion.js";
 import multer from "multer";
 import fs from "fs";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import path from "path";
 
 const storage = multer.diskStorage({
@@ -30,13 +30,14 @@ export const crearEstacion = async (req, res) => {
       const imagen = req.file;
 
       // Mueve la imagen desde la ubicación temporal a la carpeta deseada en tu proyecto
-      const rutaImagen =  "uploads/" + imagen.filename; // Ruta de la imagen en tu proyecto
+      const rutaImagen = "uploads/" + imagen.filename; // Ruta de la imagen en tu proyecto
       fs.renameSync(imagen.path, rutaImagen);
 
       // Guarda la dirección de la imagen junto con otros datos en la base de datos
-      await Estacion.crearEstacion({ ...estacionData, imagen: process.env.HOST+"/"+rutaImagen });
-      console.log(rutaImagen)
-
+      await Estacion.crearEstacion({
+        ...estacionData,
+        imagen: process.env.HOST + "/" + rutaImagen,
+      });
       res.json({ mensaje: "Estación creada exitosamente" });
     });
   } catch (error) {
@@ -67,17 +68,32 @@ export const obtenerEstacionPorId = async (req, res) => {
 };
 
 export const actualizarEstacion = async (req, res) => {
-  const { id } = req.params;
-  const estacionData = req.body;
   try {
-    const estacionActualizada = await Estacion.actualizarEstacion(
-      id,
-      estacionData
-    );
-    if (!estacionActualizada) {
-      return res.status(404).json({ mensaje: "Estación no encontrada" });
-    }
-    res.json(estacionActualizada);
+    upload.single("imagen")(req, res, async function (err) {
+      if (err instanceof multer.MulterError) {
+        return res.status(500).json({ error: err.message });
+      } else if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      const { idestacion } = req.params;
+      const estacionData = req.body;
+      // Verifica si hay una imagen adjunta en la solicitud
+      if (req.file) {
+        const imagen = req.file;
+        // Mueve la imagen desde la ubicación temporal a la carpeta deseada en tu proyecto
+        const rutaImagen = "uploads/" + imagen.filename; // Ruta de la imagen en tu proyecto
+        fs.renameSync(imagen.path, rutaImagen);
+        await Estacion.actualizarEstacion(idestacion, {
+          ...estacionData,
+          imagen: process.env.HOST + "/" + rutaImagen,
+        });
+      } else {
+        // Si no hay una imagen adjunta, simplemente actualiza los otros datos
+        await Estacion.actualizarEstacion(idestacion, estacionData);
+      }
+
+      res.json({ mensaje: "Estación actualizada exitosamente" });
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
