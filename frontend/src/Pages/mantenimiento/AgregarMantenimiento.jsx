@@ -1,130 +1,142 @@
-import React from "react";
-// Import React FilePond
-import "react-dropzone-uploader/dist/styles.css";
-import Dropzone from "react-dropzone-uploader";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useMantenimientos from "../../hooks/useMantenimientos";
 
 const AgregarMantenimiento = () => {
-  // specify upload params and url for your files
-  const getUploadParams = ({ meta }) => {
-    return { url: "https://httpbin.org/post" };
+  const navigate = useNavigate();
+  const { agregarMantenimiento } = useMantenimientos();
+  const [nuevoMantenimiento, setNuevoMantenimiento] = useState({
+    nombre: "",
+    descripcion: "",
+    actividades: "",
+  });
+  const [imagen, setImagen] = useState(null);
+
+  const handleImagenChange = (e) => {
+    setImagen(e.target.files[0]);
   };
 
-  // called every time a file's `status` changes
-  const handleChangeStatus = ({ meta, file }, status) => {
-    console.log(status, meta, file);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("nombre", nuevoMantenimiento.nombre);
+    formData.append("descripcion", nuevoMantenimiento.descripcion);
+    formData.append("actividades", nuevoMantenimiento.actividades);
+    formData.append("imagen", imagen);
+
+    agregarMantenimiento(formData);
+
+    // Limpiar los campos del formulario
+    setNuevoMantenimiento({
+      nombre: "",
+      descripcion: "",
+      actividades: "",
+    });
+
+    // Redirigir a la lista de mantenimientos
+    navigate("/mantenimiento");
   };
 
-  // receives array of files that are done uploading when submit button is clicked
-  const handleSubmit = (files, allFiles) => {
-    console.log(files.map((f) => f.meta));
-    allFiles.forEach((f) => f.remove());
+  const handleChange = (e) => {
+    setNuevoMantenimiento({
+      ...nuevoMantenimiento,
+      [e.target.name]: e.target.value,
+    });
   };
 
   return (
-    <>
-      <div>
-        {" "}
-        <div className="container-fluid page-header">
-          <div className="container">
-            <div
-              className="d-flex flex-column align-items-center justify-content-center"
-              style={{ minHeight: "700px" }}
-            >
-              <div className="card">
-                <div className="card-body">
-                  <div className="app-brand justify-content-center">
-                    <a className="navbar-brand">
-                      <h3 className="m-0 text-info mb-2">
-                        <span className="text-dark">Nuevo</span> Mantenimiento
-                      </h3>
-                    </a>
-                  </div>
+    <div>
+      <div className="container-fluid page-header my-3 p-5">
+        <div className="bg-white w-1/3 mx-auto p-5" style={{ width: "500px" }}>
+          <div className="app-brand justify-content-center">
+            <h3 className="m-0 text-info mb-2 text-3xl">
+              <span className="text-dark">Nuevo</span> Mantenimiento
+            </h3>
+          </div>
 
-                  <p className="mb-4">
-                    Llene los datos para añadir el mantenimiento
-                  </p>
+          <p className="mb-5">Llene los datos para añadir un nuevo Mantenimiento</p>
 
-                  <form
-                    id="formAuthentication"
-                    className="mb-3"
-                    action="/mantenimiento/save"
-                    method="POST"
-                    enctype="multipart/form-data"
-                  >
-                    <div className="mb-3">
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="nombre"
-                        placeholder="Nombre del mantenimiento"
-                        autofocus
-                        required
-                      />
-                    </div>
-                    <div className="control-group mb-4">
-                      <textarea
-                        className="form-control py-3 px-4"
-                        rows="2"
-                        id="message"
-                        placeholder="Descripción corta"
-                        required="required"
-                        name="descripcion"
-                        data-validation-required-message="Ingrese la descripción corta del mantenimiento"
-                      ></textarea>
-                      <p className="help-block text-danger"></p>
-                    </div>
-                    <div className="control-group">
-                      <textarea
-                        className="form-control py-3 px-4"
-                        rows="5"
-                        id="message"
-                        placeholder="Detalle"
-                        required="required"
-                        name="detalle"
-                        data-validation-required-message="Ingrese el detalle del mantenimiento"
-                      ></textarea>
-                      <p className="help-block text-danger"></p>
-                    </div>
-                    <div className="mb-3">
-                      <label className="form-label text-muted mx-2">
-                        Imágen del mantenimiento
-                      </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        className="form-control"
-                        name="image"
-                        required
-                      />
-                    </div>
-                    <Dropzone
-                      getUploadParams={getUploadParams}
-                      onChangeStatus={handleChangeStatus}
-                      onSubmit={handleSubmit}
-                      accept="image/*,audio/*,video/*"
-                    />
-                    <div className="mb-3 text-center">
-                      <button
-                        className="btn bg-blue-400 text-white d-grid w-auto mx-2"
-                        type="submit"
-                      >
-                        <i className="fa fa-save mr-2"></i>Guardar
-                      </button>
-                      <a
-                        className="btn btn-danger d-grid w-auto mx-2"
-                        href="/mantenimiento"
-                      >
-                        <i className="fa fa-ban mr-2"></i>Cancelar
-                      </a>
-                    </div>
-                  </form>
-                </div>
+          <form id="formMantenimiento" className="mb-3" onSubmit={handleSubmit}>
+            {/* Nombre */}
+            <div className="mb-3">
+              <label htmlFor="nombre" className="form-label font-bold">
+                Nombre del Mantenimiento
+              </label>
+              <input
+                onChange={handleChange}
+                type="text"
+                className="form-control"
+                name="nombre"
+                value={nuevoMantenimiento.nombre}
+                placeholder="Nombre del Mantenimiento"
+                required
+                minLength="5"
+              />
+            </div>
+
+            {/* Descripción */}
+            <div className="mb-3">
+              <label htmlFor="descripcion" className="form-label font-bold">
+                Descripción
+              </label>
+              <textarea
+                onChange={handleChange}
+                className="form-control"
+                name="descripcion"
+                value={nuevoMantenimiento.descripcion}
+                placeholder="Descripción"
+                required
+              />
+            </div>
+
+            {/* Actividades */}
+            <div className="mb-3">
+              <label htmlFor="actividades" className="form-label font-bold">
+                Actividades
+              </label>
+              <textarea
+                onChange={handleChange}
+                className="form-control"
+                name="actividades"
+                value={nuevoMantenimiento.actividades}
+                placeholder="Actividades"
+                required
+              />
+            </div>
+
+            {/* Imagen */}
+            <div className="mb-3">
+              <div>
+                <label htmlFor="formFileLg" className="form-label">
+                  Imagen del Mantenimiento
+                </label>
+                <input
+                  className="form-control form-control-lg"
+                  id="formFileLg"
+                  type="file"
+                  onChange={handleImagenChange}
+                  accept="image/*"
+                  required
+                />
               </div>
             </div>
-          </div>
+
+            <div className="mb-3 text-center">
+              <button
+                type="button"
+                className="btn btn-danger bg-red-600 mx-2"
+                onClick={() => navigate("/mantenimiento")}
+              >
+                <i className="fa fa-ban mr-2"></i>Cancelar
+              </button>
+              <button className="btn btn-success">
+                <i className="fa fa-save mr-2"></i>Guardar
+              </button>
+            </div>
+          </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -103,7 +103,7 @@ const Header = () => {
                       <Link to="" className="dropdown-item">
                         Fichas técnicas
                       </Link>
-                      <Link to="/equipoTecnico" className="dropdown-item">
+                      <Link to="/empleados" className="dropdown-item">
                         Equipo de trabajo
                       </Link>
                       <Link to="/mantenimiento" className="dropdown-item">

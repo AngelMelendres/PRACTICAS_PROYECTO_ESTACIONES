@@ -1,19 +1,25 @@
 import React, { useEffect } from "react";
+import ItemEmpleado from "./ItemEmpleado";
+import Subnavbar from "../components/SubNavbar";
 import { Link } from "react-router-dom";
-import useMantenimientos from "../../hooks/useMantenimientos";
+import useEmpleados from "../../hooks/useEmpleados";
 import useAuth from "../../hooks/useAuth";
-import ItemMantenimiento from "./ItemMantenimiento";
 
-const Mantenimientos = () => {
-  const { obtenerMantenimientos, mantenimientos } = useMantenimientos();
+const Empleados = () => {
+  const { obtenerEmpleados, empleados } = useEmpleados();
   const { auth } = useAuth();
-
+  
   useEffect(() => {
-    obtenerMantenimientos();
+    obtenerEmpleados();
   }, []);
-
+  
   return (
     <>
+      <Subnavbar
+        titulo={"Lista de empleados relacionados con el proyecto"}
+        path={"EQUIPO DE TRABAJO"}
+      />
+
       <div className="container-fluid py-3">
         <div className="container pt-5 pb-3">
           <div className="text-center mb-3 pb-3">
@@ -21,30 +27,24 @@ const Mantenimientos = () => {
               className="text-info text-uppercase"
               style={{ letterSpacing: "5px" }}
             >
-              Mantenimientos
+              EQUIPO DE TRABAJO
             </h6>
-            <h2>Información de Mantenimientos</h2>
+            <h2>Información de los Empleados</h2>
           </div>
           <div className="row">
-            {mantenimientos.map((mantenimiento) => (
-              <ItemMantenimiento
-                key={mantenimiento.idmantenimiento}
-                mantenimiento={mantenimiento}
-              />
+            {empleados.map((empleado) => (
+              <ItemEmpleado key={empleado.idempleado} empleado={empleado} />
             ))}
 
-            {/* Verificar si el usuario está autenticado para mostrar el botón de añadir mantenimiento */}
             {auth._cedula ? (
               <div className="col-lg-4 col-md-6 mb-4">
                 <div className="package-item bg-white mb-2">
                   <div className="p-3">
                     <Link
-                      to={"/mantenimiento/crear"}
-                      
+                      to={"/empleados/crear"}
                       className="h6 text-decoration-none text-info"
                     >
-                      <i className="fa fa-plus text-info mr-2"></i>Añadir
-                      mantenimiento
+                      <i className="fa fa-plus text-info mr-2"></i>Añadir empleado
                     </Link>
                   </div>
                 </div>
@@ -57,4 +57,4 @@ const Mantenimientos = () => {
   );
 };
 
-export default Mantenimientos;
+export default Empleados;

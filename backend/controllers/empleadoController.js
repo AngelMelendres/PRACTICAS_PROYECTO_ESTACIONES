@@ -1,8 +1,7 @@
-import Mantenimiento from "../models/Mantenimiento.js";
+import Empleado from "../models/Empleado.js";
 import multer from "multer";
 import fs from "fs";
 import { v4 as uuidv4 } from "uuid";
-import path from "path";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -16,29 +15,29 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-export const obtenerMantenimientos = async (req, res) => {
+export const obtenerEmpleados = async (req, res) => {
   try {
-    const mantenimientos = await Mantenimiento.obtenerTodosLosMantenimientos();
-    res.json(mantenimientos);
+    const empleados = await Empleado.obtenerTodosLosEmpleados();
+    res.json(empleados);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-export const obtenerMantenimientoPorId = async (req, res) => {
+export const obtenerEmpleadoPorId = async (req, res) => {
   const { id } = req.params;
   try {
-    const mantenimiento = await Mantenimiento.obtenerMantenimientoPorId(id);
-    if (!mantenimiento) {
-      return res.status(404).json({ mensaje: "Mantenimiento no encontrado" });
+    const empleado = await Empleado.obtenerEmpleadoPorId(id);
+    if (!empleado) {
+      return res.status(404).json({ mensaje: "Empleado no encontrado" });
     }
-    res.json(mantenimiento);
+    res.json(empleado);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-export const crearMantenimiento = async (req, res) => {
+export const crearEmpleado = async (req, res) => {
   try {
     upload.single("imagen")(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
@@ -47,7 +46,7 @@ export const crearMantenimiento = async (req, res) => {
         return res.status(500).json({ error: err.message });
       }
 
-      const mantenimientoData = req.body;
+      const empleadoData = req.body;
       const imagen = req.file;
 
       // Mueve la imagen desde la ubicación temporal a la carpeta deseada en tu proyecto
@@ -55,19 +54,18 @@ export const crearMantenimiento = async (req, res) => {
       fs.renameSync(imagen.path, rutaImagen);
 
       // Guarda la dirección de la imagen junto con otros datos en la base de datos
-      await Mantenimiento.crearMantenimiento({
-        ...mantenimientoData,
+      await Empleado.crearEmpleado({
+        ...empleadoData,
         imagen: process.env.HOST + "/" + rutaImagen,
       });
-      console.log(rutaImagen);
-      res.json({ mensaje: "mantenimiento creado exitosamente" });
+      res.json({ mensaje: "Empleado creado exitosamente" });
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-export const actualizarMantenimiento = async (req, res) => {
+export const actualizarEmpleado = async (req, res) => {
   try {
     upload.single("imagen")(req, res, async function (err) {
       if (err instanceof multer.MulterError) {
@@ -76,42 +74,40 @@ export const actualizarMantenimiento = async (req, res) => {
         return res.status(500).json({ error: err.message });
       }
       const { id } = req.params;
-      const mantenimientoData = req.body;
+      const empleadoData = req.body;
 
       if (req.file) {
         const imagen = req.file;
         // Mueve la imagen desde la ubicación temporal a la carpeta deseada en tu proyecto
         const rutaImagen = "uploads/" + imagen.filename; // Ruta de la imagen en tu proyecto
         fs.renameSync(imagen.path, rutaImagen);
-        await Mantenimiento.actualizarMantenimiento(id, {
-          ...mantenimientoData,
+        await Empleado.actualizarEmpleado(id, {
+          ...empleadoData,
           imagen: process.env.HOST + "/" + rutaImagen,
         });
       } else {
-        await Mantenimiento.actualizarMantenimiento(id, mantenimientoData);
+        await Empleado.actualizarEmpleado(id, empleadoData);
       }
     });
 
-    const sensorActualizado = await Sensor.actualizarSensor(id, sensorData);
-    if (!sensorActualizado) {
-      return res.status(404).json({ mensaje: "Sensor no encontrado" });
+    const empleadoActualizado = await Empleado.actualizarEmpleado(id, empleadoData);
+    if (!empleadoActualizado) {
+      return res.status(404).json({ mensaje: "Empleado no encontrado" });
     }
-    res.json(sensorActualizado);
+    res.json(empleadoActualizado);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-export const eliminarMantenimiento = async (req, res) => {
+export const eliminarEmpleado = async (req, res) => {
   const { id } = req.params;
   try {
-    const mantenimientoEliminado = await Mantenimiento.eliminarMantenimiento(
-      id
-    );
-    if (!mantenimientoEliminado) {
-      return res.status(404).json({ mensaje: "Mantenimiento no encontrado" });
+    const empleadoEliminado = await Empleado.eliminarEmpleado(id);
+    if (!empleadoEliminado) {
+      return res.status(404).json({ mensaje: "Empleado no encontrado" });
     }
-    res.json({ mensaje: "Mantenimiento eliminado correctamente" });
+    res.json({ mensaje: "Empleado eliminado correctamente" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

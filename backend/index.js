@@ -4,13 +4,14 @@ import cors from "cors";
 import conectarDB from "./config/db.js";
 import estacionRoutes from "./routes/estacionRoutes.js";
 import sensorRoutes from "./routes/sensorRoutes.js";
+import empleadoRoutes from "./routes/empleadoRouter.js";
 import mantenimientoRoutes from "./routes/mantenimientoRoutes.js";
 import rolRoutes from "./routes/rolRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
 import imagenRoutes from "./routes/imagenRoutes.js";
 import tipoEstacionRoutes from "./routes/tipoEstacionRoutes.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
-import path from 'path';
+import path from "path";
 
 const app = express();
 app.use(express.json());
@@ -24,12 +25,12 @@ const whitelist = [process.env.FRONTEND_URL];
 
 app.use(cors());
 // Obtiene la ruta del directorio actual
-app.use('/uploads', express.static('uploads'));
-
+app.use("/uploads", express.static("uploads"));
 
 // Routing
 app.use("/api/estaciones", estacionRoutes);
 app.use("/api/sensores", sensorRoutes);
+app.use("/api/empleados", empleadoRoutes);
 app.use("/api/mantenimientos", mantenimientoRoutes);
 app.use("/api/roles", rolRoutes);
 app.use("/api/blogs", blogRoutes);
