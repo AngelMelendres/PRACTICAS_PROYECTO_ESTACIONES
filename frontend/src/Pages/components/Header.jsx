@@ -117,10 +117,10 @@ const Header = () => {
                   <Link href="" className="nav-item nav-link">
                     Mapas
                   </Link>
-                  <Link href="" className="nav-item nav-link">
+                  <Link to={"/noticias"} className="nav-item nav-link">
                     Noticias
                   </Link>
-                  <Link href="" className="nav-item nav-link">
+                  <Link to={"/contacto"} className="nav-item nav-link">
                     Contacto
                   </Link>
 
@@ -151,8 +151,11 @@ const Header = () => {
                           </div>
                         </div>
                         <div className="dropdown-divider"></div>
-                        <Link href="" className="dropdown-item">
+                        <Link to={"/administradores"} className="dropdown-item">
                           <i className="fa fa-users mr-2"></i>Administradores
+                        </Link>
+                        <Link to={"/perfil"} className="dropdown-item">
+                          <i className="fa fa-user mr-2"></i>Perfil
                         </Link>
                         <div className="dropdown-divider"></div>
                         <button

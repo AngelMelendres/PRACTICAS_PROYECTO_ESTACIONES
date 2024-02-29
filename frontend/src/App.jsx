@@ -25,6 +25,9 @@ import EditarMantenimiento from "./Pages/mantenimiento/EditarMantenimiento";
 import Empleados from "./Pages/empleados/Empleados";
 import AgregarEmpleado from "./Pages/empleados/AgregarEmpleado";
 import EditarEmpleado from "./Pages/empleados/EditarEmpleado";
+import Contacto from "./Pages/contacto/Contacto";
+import Administradores from "./Pages/administradores/Administradores";
+import Perfil from "./Pages/perfil/Perfil";
 
 function App() {
   return (
@@ -48,6 +51,12 @@ function App() {
                       path="/mantenimiento"
                       element={<Mantenimiento />}
                     ></Route>
+                    <Route
+                      path="/administradores"
+                      element={<Administradores />}
+                    ></Route>
+                    <Route path="/perfil" element={<Perfil />}></Route>
+                    <Route path="/contacto" element={<Contacto />}></Route>
                     <Route path="/empleados" element={<Empleados />}></Route>
 
                     {/* RUTAS PROTEGIDAS */}

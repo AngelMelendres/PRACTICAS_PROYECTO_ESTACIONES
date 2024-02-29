@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 const Subnavbar = ({ titulo, path }) => {
   return (
     <>
@@ -13,9 +14,9 @@ const Subnavbar = ({ titulo, path }) => {
             </h3>
             <div className="d-inline-flex text-white">
               <p className="m-0 text-uppercase">
-                <a className="text-white" href="/inicio">
+                <Link className="text-white" to={"/"}>
                   Inicio
-                </a>
+                </Link>
               </p>
               <i className="fa fa-angle-double-right pt-1 px-3"></i>
               <p className="m-0 text-uppercase">Información</p>
