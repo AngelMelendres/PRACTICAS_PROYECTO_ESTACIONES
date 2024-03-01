@@ -5,13 +5,52 @@ const EmpleadosContext = createContext();
 
 const EmpleadosProvider = ({ children }) => {
   const [empleados, setEmpleados] = useState([]);
+  const [administradores, setAdministradores] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [empleadoEditar, setEmpleadoEditar] = useState();
+  const [errores, setErrores] = useState(null);
 
   useEffect(() => {
+    obtenerAdministradores();
     obtenerEmpleados();
-  }, [empleados]);
+  }, []);
 
+  const obtenerAdministradores = async () => {
+    try {
+      setCargando(true);
+      const { data } = await UsuarioAxios.get("/usuarios");
+      setAdministradores(data);
+    } catch (error) {
+      console.error("Error al obtener los administradores:", error);
+    } finally {
+      setCargando(false);
+    }
+  };
+
+  const crearAdministrador = async (nuevoAdministrador) => {
+    try {
+      const { data } = await UsuarioAxios.post("/usuarios", nuevoAdministrador);
+      setAdministradores([...administradores, nuevoAdministrador]);
+      return true;
+    } catch (error) {
+      console.error("Error al agregar el administrador:", error);
+      if (error.response && error.response.data && error.response.data.msg) {
+        setErrores(error.response.data.msg);
+        return false;
+      } else {
+        setErrores(["Error al agregar el administrador"]);
+        return false;
+      }
+    }
+  };
+  const agregarEmpleado = async (nuevoEmpleado) => {
+    try {
+      const { data } = await UsuarioAxios.post("/empleados", nuevoEmpleado);
+      setEmpleados([...empleados, data]);
+    } catch (error) {
+      console.error("Error al agregar el empleado:", error);
+    }
+  };
   const obtenerEmpleados = async () => {
     try {
       setCargando(true);
@@ -33,15 +72,6 @@ const EmpleadosProvider = ({ children }) => {
     }
   };
 
-  const agregarEmpleado = async (nuevoEmpleado) => {
-    try {
-      const { data } = await UsuarioAxios.post("/empleados", nuevoEmpleado);
-      setEmpleados([...empleados, data]);
-    } catch (error) {
-      console.error("Error al agregar el empleado:", error);
-    }
-  };
-
   const eliminarEmpleado = async (id) => {
     try {
       await UsuarioAxios.delete(`/empleados/${id}`);
@@ -53,7 +83,10 @@ const EmpleadosProvider = ({ children }) => {
 
   const actualizarEmpleado = async (id, nuevoEmpleado) => {
     try {
-      const { data } = await UsuarioAxios.put(`/empleados/${id}`, nuevoEmpleado);
+      const { data } = await UsuarioAxios.put(
+        `/empleados/${id}`,
+        nuevoEmpleado
+      );
       // Lógica de actualización
     } catch (error) {
       console.error("Error al actualizar el empleado:", error);
@@ -66,11 +99,16 @@ const EmpleadosProvider = ({ children }) => {
         empleados,
         cargando,
         empleadoEditar,
+        administradores,
+        errores,
+        setAdministradores,
         obtenerEmpleados,
         obtenerEmpleado,
         agregarEmpleado,
         eliminarEmpleado,
-        actualizarEmpleado
+        actualizarEmpleado,
+        obtenerAdministradores,
+        crearAdministrador,
       }}
     >
       {children}

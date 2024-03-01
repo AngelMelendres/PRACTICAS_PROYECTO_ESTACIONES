@@ -4,22 +4,23 @@ import generarJWT from "../helpers/generarJWT.js";
 import { emailRegistro, emailOlvidePassword } from "../helpers/email.js";
 
 const registrar = async (req, res) => {
-  const { cedula, nombres, apellidos, email, password } = req.body;
+  const { cedula, nombres, apellidos, email, password, estado, rol } = req.body;
   const usuarioData = {
     cedula,
     nombres,
     apellidos,
     email,
     password,
-    estado: "inactivo",
+    estado,
+    rol,
     token: generarId(),
   };
   try {
     const existeUsuarioEmail = await Usuario.obtenerUsuarioPorEmail(email);
-    const existeUsuarioCedula= await Usuario.obtenerUsuarioPorCedula(cedula);
+    const existeUsuarioCedula = await Usuario.obtenerUsuarioPorCedula(cedula);
 
     if (existeUsuarioEmail) {
-      return res.status(400).json({ msg: "Usuario Email ya registrado" }); 
+      return res.status(400).json({ msg: "Usuario Email ya registrado" });
     }
     if (existeUsuarioCedula) {
       return res.status(400).json({ msg: "Usuario Cedula ya registrado" });
@@ -34,6 +35,14 @@ const registrar = async (req, res) => {
   }
 };
 
+const obtenerUsuarios = async (req, res) => {
+  try {
+    const usuarios = await Usuario.obtenerTodosLosUsuarios();
+    res.json(usuarios);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 const autenticar = async (req, res) => {
   const { email, password } = req.body;
   const usuario = await Usuario.obtenerUsuarioPorEmail(email);
@@ -128,11 +137,10 @@ const comprobarToken = async (req, res) => {
 };
 
 const nuevoPassword = async (req, res) => {
-  const { token } = req.params;
   const { password } = req.body;
 
   try {
-    const usuario = await Usuario.actualizarPassword(token, password);
+    const usuario = await Usuario.actualizarPassword(password);
     if (!usuario) {
       const error = new Error("Token no válido");
       return res.status(404).json({ msg: error.message });
@@ -142,6 +150,35 @@ const nuevoPassword = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error al modificar la contraseña" });
+  }
+};
+
+const cambiarContrasena = async (req, res) => {
+  const { id } = req.usuario; // Suponiendo que el id del usuario está disponible en req.usuario
+  const { currentPassword, newPassword } = req.body;
+
+  try {
+    const usuario = await Usuario.findById(id);
+
+    // Verificar si la contraseña actual es correcta
+    const passwordCorrecto = await Usuario.comprobarPassword(
+      usuario,
+      currentPassword
+    );
+    if (!passwordCorrecto) {
+      return res
+        .status(403)
+        .json({ msg: "La contraseña actual es incorrecta" });
+    }
+
+    // Actualizar la contraseña del usuario
+    usuario.password = newPassword;
+    await usuario.save();
+
+    res.json({ msg: "Contraseña actualizada exitosamente" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error al cambiar la contraseña" });
   }
 };
 
@@ -157,6 +194,8 @@ export {
   confirmar,
   olvidePassword,
   comprobarToken,
+  cambiarContrasena,
   nuevoPassword,
   perfil,
+  obtenerUsuarios,
 };

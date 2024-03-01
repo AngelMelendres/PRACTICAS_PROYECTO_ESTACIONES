@@ -10,7 +10,7 @@ const MantenimientosProvider = ({ children }) => {
 
   useEffect(() => {
     obtenerMantenimientos();
-  }, [mantenimientos]);
+  }, []);
 
   const obtenerMantenimientos = async () => {
     try {

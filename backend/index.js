@@ -6,10 +6,7 @@ import estacionRoutes from "./routes/estacionRoutes.js";
 import sensorRoutes from "./routes/sensorRoutes.js";
 import empleadoRoutes from "./routes/empleadoRouter.js";
 import mantenimientoRoutes from "./routes/mantenimientoRoutes.js";
-import rolRoutes from "./routes/rolRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
-import imagenRoutes from "./routes/imagenRoutes.js";
-import tipoEstacionRoutes from "./routes/tipoEstacionRoutes.js";
 import usuarioRoutes from "./routes/usuarioRoutes.js";
 import path from "path";
 
@@ -32,10 +29,7 @@ app.use("/api/estaciones", estacionRoutes);
 app.use("/api/sensores", sensorRoutes);
 app.use("/api/empleados", empleadoRoutes);
 app.use("/api/mantenimientos", mantenimientoRoutes);
-app.use("/api/roles", rolRoutes);
 app.use("/api/blogs", blogRoutes);
-app.use("/api/imagenes", imagenRoutes);
-app.use("/api/tipoestaciones", tipoEstacionRoutes);
 app.use("/api/usuarios", usuarioRoutes);
 
 const PORT = process.env.PORT || 4000;

@@ -2,13 +2,13 @@ import { pool } from "../config/db.js";
 
 class Sensor {
   static async obtenerTodosLosSensores() {
-    const query = "SELECT * FROM sensores";
+    const query = "SELECT * FROM sistemaweb.sensores";
     const { rows } = await pool.query(query);
     return rows;
   }
 
   static async obtenerSensorPorId(id) {
-    const query = "SELECT * FROM sensores WHERE idsensor = $1";
+    const query = "SELECT * FROM sistemaweb.sensores WHERE idsensor = $1";
     const values = [id];
     const { rows } = await pool.query(query, values);
     return rows[0];
@@ -25,7 +25,7 @@ class Sensor {
       imagen,
     } = sensorData;
     const query =
-      "INSERT INTO sensores (nombre, modelo, numeroSerie, estado, especificaciones, marca, imagen) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
+      "INSERT INTO sistemaweb.sensores (nombre, modelo, numeroSerie, estado, especificaciones, marca, imagen) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
     const values = [
       nombre,
       modelo,
@@ -52,7 +52,7 @@ class Sensor {
 
     try {
       let query =
-        "UPDATE sensores SET nombre = $1, modelo = $2, numeroSerie = $3, estado = $4, especificaciones = $5, marca = $6";
+        "UPDATE sistemaweb.sensores SET nombre = $1, modelo = $2, numeroSerie = $3, estado = $4, especificaciones = $5, marca = $6";
       let values = [
         nombre,
         modelo,
@@ -80,7 +80,7 @@ class Sensor {
   }
 
   static async eliminarSensor(id) {
-    const query = "DELETE FROM sensores WHERE idsensor = $1 RETURNING *";
+    const query = "DELETE FROM sistemaweb.sensores WHERE idsensor = $1 RETURNING *";
     const values = [id];
     const { rows } = await pool.query(query, values);
     return rows[0];

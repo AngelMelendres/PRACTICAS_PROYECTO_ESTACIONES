@@ -3,38 +3,38 @@ import bcrypt from "bcrypt";
 
 class Usuario {
   static async obtenerUsuarioPorEmail(email) {
-    const query = "SELECT * FROM usuarios WHERE email = $1";
+    const query = "SELECT * FROM sistemaweb.usuarios WHERE email = $1";
     const values = [email];
     const { rows } = await pool.query(query, values);
     return rows[0];
   }
 
   static async obtenerUsuarioPorCedula(cedula) {
-    const query = "SELECT * FROM usuarios WHERE cedula = $1";
+    const query = "SELECT * FROM sistemaweb.usuarios WHERE cedula = $1";
     const values = [cedula];
     const { rows } = await pool.query(query, values);
     return rows[0];
   }
 
   static async obtenerTodosLosUsuarios() {
-    const query = "SELECT * FROM usuarios";
+    const query = "SELECT * FROM sistemaweb.usuarios";
     const { rows } = await pool.query(query);
     return rows;
   }
 
   static async obtenerUsuarioPorEmail(email) {
-    const query = "SELECT * FROM usuarios WHERE email = $1";
+    const query = "SELECT * FROM sistemaweb.usuarios WHERE email = $1";
     const values = [email];
     const { rows } = await pool.query(query, values);
     return rows[0];
   }
 
   static async crearUsuario(usuarioData) {
-    const { cedula, nombres, apellidos, email, password, estado, token } = usuarioData;
+    const { cedula, nombres, apellidos, email, password, estado, token,rol } = usuarioData;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const query =
-      "INSERT INTO usuarios (cedula, nombres, apellidos, email, password, estado, token) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *";
+      "INSERT INTO sistemaweb.usuarios (cedula, nombres, apellidos, email, password, estado, token,rol) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *";
     const values = [
       cedula,
       nombres,
@@ -43,6 +43,7 @@ class Usuario {
       hashedPassword,
       estado,
       token,
+      rol
     ];
     const { rows } = await pool.query(query, values);
     return rows[0];
@@ -68,7 +69,7 @@ class Usuario {
     return rows[0];
   }
 
-  static async actualizarPassword(id, password) {
+  static async actualizarPassword(password) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const query =
       "UPDATE usuarios SET password = $1, token = '' WHERE idusuarios = $2 RETURNING *";

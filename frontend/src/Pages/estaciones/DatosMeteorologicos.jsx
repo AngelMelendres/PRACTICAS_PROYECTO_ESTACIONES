@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import imgwind from "/img/imgwind.png";
+import useEstadisticas from "../../hooks/useEstadisticas";
 
 const DatosMeteorologicos = () => {
+  const { estadisticas, obtenerEstadisticas } = useEstadisticas();
+
+  useEffect(() => {
+    obtenerEstadisticas();
+  }, []);
+  console.log(estadisticas);
+
   // Simulación de datos provenientes de una base de datos
   const data = [
     {
@@ -82,8 +90,6 @@ const DatosMeteorologicos = () => {
   return (
     <>
       <div className="container mt-10 rounded-lg">
-      
-
         <div className="shadow-xl px-5 py-2 bg-white">
           <div className="my-10">
             <h1>DATOS INSTANTÁNEOS PRINCIPALES</h1>
@@ -121,8 +127,13 @@ const DatosMeteorologicos = () => {
                   <td>{item.direccionViento}</td>
                   <td>
                     <div className="flex items-center gap-2">
-                      <img className="w-10" src={imgwind} alt="" />
-                      <p>{item.velocidadViento}</p>
+                      <img
+                        className="w-10"
+                        src={imgwind}
+                        style={{ width: 50, height: 50 }}
+                        alt=""
+                      />
+                      <p>{item.velocidadViento} m/s</p>
                     </div>
                   </td>
                 </tr>

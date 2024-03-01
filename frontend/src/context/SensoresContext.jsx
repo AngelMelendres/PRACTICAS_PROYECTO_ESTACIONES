@@ -8,7 +8,7 @@ const SensoresProvider = ({ children }) => {
   const [sensorEditar, setSensorEditar] = useState();
   useEffect(() => {
     obtenerSensores();
-  }, [sensores]);
+  }, []);
 
   const obtenerSensores = async () => {
     try {

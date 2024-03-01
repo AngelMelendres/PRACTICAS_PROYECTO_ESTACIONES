@@ -2,13 +2,13 @@ import { pool } from "../config/db.js";
 
 class Estacion {
   static async obtenerTodasLasEstaciones() {
-    const query = "SELECT * FROM estaciones";
+    const query = "SELECT * FROM sistemaweb.estaciones";
     const { rows } = await pool.query(query);
     return rows;
   }
 
   static async obtenerEstacionPorId(id) {
-    const query = "SELECT * FROM estaciones WHERE idestacion = $1";
+    const query = "SELECT * FROM sistemaweb.estaciones WHERE idestacion = $1";
     const values = [id];
     const { rows } = await pool.query(query, values);
     return rows[0];
@@ -30,7 +30,7 @@ class Estacion {
       imagen,
     } = estacionData;
     const query =
-      "INSERT INTO estaciones (nombre, provincia, canton, parroquia, longitud, latitud, altura, direccion, promotorTerreno, institucionACargo, manualAutomatica,imagen) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,$12) RETURNING *";
+      "INSERT INTO sistemaweb.estaciones (nombre, provincia, canton, parroquia, longitud, latitud, altura, direccion, promotorTerreno, institucionACargo, manualAutomatica,imagen) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11,$12) RETURNING *";
     const values = [
       nombre,
       provincia,
@@ -66,7 +66,7 @@ class Estacion {
     } = estacionData;
     
     try {
-      let query = "UPDATE estaciones SET nombre = $1, provincia = $2, canton = $3, parroquia = $4, longitud = $5, latitud = $6, altura = $7, direccion = $8, promotorterreno = $9, institucionacargo = $10, manualautomatica = $11";
+      let query = "UPDATE sistemaweb.estaciones SET nombre = $1, provincia = $2, canton = $3, parroquia = $4, longitud = $5, latitud = $6, altura = $7, direccion = $8, promotorterreno = $9, institucionacargo = $10, manualautomatica = $11";
       let values = [
         nombre,
         provincia,
@@ -100,7 +100,7 @@ class Estacion {
 
 
   static async eliminarEstacion(id) {
-    const query = "DELETE FROM estaciones WHERE idestacion = $1 RETURNING *";
+    const query = "DELETE FROM sistemaweb.estaciones WHERE idestacion = $1 RETURNING *";
     const values = [id];
     const { rows } = await pool.query(query, values);
     return rows[0];

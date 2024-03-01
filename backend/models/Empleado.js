@@ -2,13 +2,13 @@ import { pool } from "../config/db.js";
 
 class Empleado {
   static async obtenerTodosLosEmpleados() {
-    const query = "SELECT * FROM empleados";
+    const query = "SELECT * FROM sistemaweb.empleados";
     const { rows } = await pool.query(query);
     return rows;
   }
 
   static async obtenerEmpleadoPorId(id) {
-    const query = "SELECT * FROM empleados WHERE idempleado = $1";
+    const query = "SELECT * FROM sistemaweb.empleados WHERE idempleado = $1";
     const values = [id];
     const { rows } = await pool.query(query, values);
     return rows[0];
@@ -17,7 +17,7 @@ class Empleado {
   static async crearEmpleado(empleadoData) {
     const { nombres, apellidos, email, cargo, imagen } = empleadoData;
     const query =
-      "INSERT INTO empleados (nombres, apellidos, email, cargo, imagen) VALUES ($1, $2, $3, $4, $5) RETURNING *";
+      "INSERT INTO sistemaweb.empleados (nombres, apellidos, email, cargo, imagen) VALUES ($1, $2, $3, $4, $5) RETURNING *";
     const values = [nombres, apellidos, email, cargo, imagen];
     const { rows } = await pool.query(query, values);
     return rows[0];
@@ -28,7 +28,7 @@ class Empleado {
 
     try {
       let query =
-        "UPDATE empleados SET nombres = $1, apellidos = $2, email = $3, cargo = $4";
+        "UPDATE sistemaweb.empleados SET nombres = $1, apellidos = $2, email = $3, cargo = $4";
       let values = [nombres, apellidos, email, cargo];
       // Si hay imagen, añadir la actualización de la imagen a la consulta
       if (imagen) {
@@ -48,7 +48,7 @@ class Empleado {
   }
 
   static async eliminarEmpleado(id) {
-    const query = "DELETE FROM empleado WHERE idempleado = $1 RETURNING *";
+    const query = "DELETE FROM sistemaweb.empleado WHERE idempleado = $1 RETURNING *";
     const values = [id];
     const { rows } = await pool.query(query, values);
     return rows[0];

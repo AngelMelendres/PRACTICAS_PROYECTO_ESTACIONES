@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ItemEstacion from "./ItemEstacion";
 import useEstaciones from "../../hooks/useEstaciones";
 import { Link } from "react-router-dom";
@@ -7,8 +7,12 @@ import Subnavbar from "../components/SubNavbar";
 import useAuth from "../../hooks/useAuth";
 
 const Estaciones = () => {
-  const { estaciones } = useEstaciones();
+  const { estaciones, obtenerEstaciones } = useEstaciones();
   const { auth } = useAuth();
+
+  useEffect(() => {
+    obtenerEstaciones();
+  }, []);
   return (
     <>
       <Subnavbar
@@ -28,9 +32,8 @@ const Estaciones = () => {
           </div>
         </div>
       </div>
-
+      <MapaEstaciones estaciones={estaciones} />
       <div>
-        <MapaEstaciones />
         {/* <!-- Estaciones Start --> */}
         <div className=" py-3">
           <div className="container pt-5 pb-3">

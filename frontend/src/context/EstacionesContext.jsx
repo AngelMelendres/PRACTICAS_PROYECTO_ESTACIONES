@@ -13,22 +13,20 @@ const EstacionesProvider = ({ children }) => {
   const [cargando, setCargando] = useState(false);
 
   useEffect(() => {
-    const obtenerEstaciones = async () => {
-      try {
-        setCargando(true);
-        const { data } = await UsuarioAxios.get("/estaciones");
-        setEstaciones(data);
-      } catch (error) {
-        console.error("Error al obtener las estaciones:", error);
-      } finally {
-        setCargando(false);
-      }
-    };
-
-    obtenerEstaciones();
     obtenerlocacionesEcuador();
   }, []);
 
+  const obtenerEstaciones = async () => {
+    try {
+      setCargando(true);
+      const { data } = await UsuarioAxios.get("/estaciones");
+      setEstaciones(data);
+    } catch (error) {
+      console.error("Error al obtener las estaciones:", error);
+    } finally {
+      setCargando(false);
+    }
+  };
   const obtenerEstacion = async (id) => {
     try {
       const { data } = await UsuarioAxios.get(`/estaciones/${id}`);
@@ -64,14 +62,20 @@ const EstacionesProvider = ({ children }) => {
 
   const actualizarEstacion = async (idestacion, estacionData) => {
     try {
-      const { data } = await UsuarioAxios.put(`/estaciones/${idestacion}`,estacionData,{
+      const { data } = await UsuarioAxios.put(
+        `/estaciones/${idestacion}`,
+        estacionData,
+        {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        });
+        }
+      );
 
       setEstaciones(
-        estaciones.map((estacion) => (estacion.idestacion === idestacion ? data : estacion))
+        estaciones.map((estacion) =>
+          estacion.idestacion === idestacion ? data : estacion
+        )
       );
     } catch (error) {
       console.error("Error al actualizar la estación:", error);
@@ -94,6 +98,7 @@ const EstacionesProvider = ({ children }) => {
         locacionesEcuador,
         estacionEditar,
         obtenerEstacion,
+        obtenerEstaciones,
         agregarEstacion,
         eliminarEstacion,
         actualizarEstacion,

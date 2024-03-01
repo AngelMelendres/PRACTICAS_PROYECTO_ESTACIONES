@@ -16,7 +16,7 @@ import NotFound from "./Pages/NotFound";
 import EditarEstacion from "./Pages/estaciones/EditarEstacion";
 import AgregarEstacion from "./Pages/estaciones/AgregarEstacion";
 import PrivateRoute from "./Pages/layouts/PrivateRoute";
-import Mantenimiento from "./Pages/mantenimiento/mantenimiento";
+import Mantenimiento from "./Pages/mantenimiento/Mantenimiento";
 import AgregarMantenimiento from "./Pages/mantenimiento/AgregarMantenimiento";
 import DatosMeteorologicos from "./Pages/estaciones/DatosMeteorologicos";
 import AgregarSensor from "./Pages/sensores/AgregarSensor";
@@ -28,6 +28,7 @@ import EditarEmpleado from "./Pages/empleados/EditarEmpleado";
 import Contacto from "./Pages/contacto/Contacto";
 import Administradores from "./Pages/administradores/Administradores";
 import Perfil from "./Pages/perfil/Perfil";
+import { EstadisticasProvider } from "./context/estadisticasContext";
 
 function App() {
   return (
@@ -37,72 +38,79 @@ function App() {
           <SensoresProvider>
             <MantenimientosProvider>
               <EmpleadosProvider>
-                <RootLayout>
-                  <Routes>
-                    <Route path="/" exact element={<Index />} />
-                    <Route path="/estaciones" exact element={<Estaciones />} />
-                    <Route path="/sensores" exact element={<Sensores />} />
-                    <Route path="/login" exact element={<Login />} />
-                    <Route
-                      path="/datosMeteorologicos"
-                      element={<DatosMeteorologicos />}
-                    ></Route>
-                    <Route
-                      path="/mantenimiento"
-                      element={<Mantenimiento />}
-                    ></Route>
-                    <Route
-                      path="/administradores"
-                      element={<Administradores />}
-                    ></Route>
-                    <Route path="/perfil" element={<Perfil />}></Route>
-                    <Route path="/contacto" element={<Contacto />}></Route>
-                    <Route path="/empleados" element={<Empleados />}></Route>
-
-                    {/* RUTAS PROTEGIDAS */}
-                    <Route element={<PrivateRoute />}>
+                <EstadisticasProvider>
+                  <RootLayout>
+                    <Routes>
+                      <Route path="/" exact element={<Index />} />
                       <Route
-                        path="/estaciones/crear"
-                        element={<AgregarEstacion />}
+                        path="/estaciones"
+                        exact
+                        element={<Estaciones />}
+                      />
+                      <Route path="/sensores" exact element={<Sensores />} />
+                      <Route path="/login" exact element={<Login />} />
+                      <Route
+                        path="/datosMeteorologicos"
+                        element={<DatosMeteorologicos />}
                       ></Route>
                       <Route
-                        path="/estaciones/editar/:id"
-                        element={<EditarEstacion />}
-                      ></Route>
-                      <Route
-                        path="/sensores/crear"
-                        element={<AgregarSensor />}
-                      ></Route>
-                      <Route
-                        path="/sensores/editar/:id"
-                        element={<EditarSensor />}
+                        path="/mantenimiento"
+                        element={<Mantenimiento />}
                       ></Route>
 
-                      <Route
-                        path="/mantenimiento/crear"
-                        element={<AgregarMantenimiento />}
-                      ></Route>
+                      <Route path="/contacto" element={<Contacto />}></Route>
+                      <Route path="/empleados" element={<Empleados />}></Route>
 
-                      <Route
-                        path="/mantenimiento/editar/:id"
-                        element={<EditarMantenimiento />}
-                      ></Route>
+                      {/* RUTAS PROTEGIDAS */}
+                      <Route element={<PrivateRoute />}>
+                        <Route
+                          path="/estaciones/crear"
+                          element={<AgregarEstacion />}
+                        ></Route>
+                        <Route
+                          path="/estaciones/editar/:id"
+                          element={<EditarEstacion />}
+                        ></Route>
+                        <Route
+                          path="/sensores/crear"
+                          element={<AgregarSensor />}
+                        ></Route>
+                        <Route
+                          path="/sensores/editar/:id"
+                          element={<EditarSensor />}
+                        ></Route>
 
-                      <Route
-                        path="/empleados/crear"
-                        element={<AgregarEmpleado />}
-                      ></Route>
+                        <Route
+                          path="/mantenimiento/crear"
+                          element={<AgregarMantenimiento />}
+                        ></Route>
 
-                      <Route
-                        path="/empleados/editar/:id"
-                        element={<EditarEmpleado />}
-                      ></Route>
-                    </Route>
+                        <Route
+                          path="/mantenimiento/editar/:id"
+                          element={<EditarMantenimiento />}
+                        ></Route>
 
-                    {/* RUTA $404 */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </RootLayout>
+                        <Route
+                          path="/empleados/crear"
+                          element={<AgregarEmpleado />}
+                        ></Route>
+
+                        <Route
+                          path="/empleados/editar/:id"
+                          element={<EditarEmpleado />}
+                        ></Route>
+
+                        <Route path="/perfil" element={<Perfil />}></Route>
+                      </Route>
+                      <Route
+                        path="/administradores"
+                        element={<Administradores />}
+                      ></Route>
+                      {/* RUTA $404 */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </RootLayout>
+                </EstadisticasProvider>
               </EmpleadosProvider>
             </MantenimientosProvider>
           </SensoresProvider>

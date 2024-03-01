@@ -1,27 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import Modal from "react-modal";
-
-import "leaflet/dist/leaflet.css";
-import useEstaciones from "../../hooks/useEstaciones";
 import Charts from "./Charts";
 
-const MapaEstaciones = () => {
-  const { estaciones } = useEstaciones();
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+import "leaflet/dist/leaflet.css";
 
-  const openModal = () => {
-    setModalIsOpen(true);
+const MapaEstaciones = ({ estaciones }) => {
+  const [estacioness,setEstacioness] = useState([])
+  useEffect(() => {
+    setEstacioness(estaciones);
+  },[])
+
+  // Estado para manejar el modal abierto de cada marcador
+  const [modalIndex, setModalIndex] = useState(null);
+
+  const openModal = (index) => {
+    setModalIndex(index);
   };
 
   const closeModal = () => {
-    setModalIsOpen(false);
+    setModalIndex(null);
   };
 
   return (
     <>
       <Modal
-        isOpen={modalIsOpen}
+        isOpen={modalIndex !== null}
         onRequestClose={closeModal}
         contentLabel="Gráfico Modal"
         ariaHideApp={false} // Necesario para evitar un warning de accesibilidad
@@ -31,19 +35,14 @@ const MapaEstaciones = () => {
             zIndex: 1002,
           },
         }}
-      ><button
-      className="btn bg-danger text-white font-bold"
-      onClick={closeModal}
-    >
-      Cerrar Modal
-    </button>
-        <Charts />
+      >
         <button
           className="btn bg-danger text-white font-bold"
           onClick={closeModal}
         >
           Cerrar Modal
         </button>
+        {modalIndex !== null && <Charts data={estaciones[modalIndex]} />}
       </Modal>
 
       <div className="w-2/3 mx-auto mt-10">
@@ -57,15 +56,10 @@ const MapaEstaciones = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
-          {estaciones.map((estacion, index) => (
+          {estacioness.map((estacion, index) => (
             <Marker
               key={index}
               position={[estacion.latitud, estacion.longitud]}
-              style={{
-                color: "red",
-                fillOpacity: 0.7,
-                radius: 10,
-              }}
             >
               <Popup>
                 <div>
@@ -98,7 +92,7 @@ const MapaEstaciones = () => {
                   </ul>
                   <button
                     className="btn btn-primary"
-                    onClick={openModal}
+                    onClick={() => openModal(index)}
                   >
                     Ver Datos
                   </button>
